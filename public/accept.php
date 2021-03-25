@@ -8,10 +8,26 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
 session_start();
 
-$api = new SpotifyWebAPI\SpotifyWebAPI();
+$session = new SpotifyWebAPI\Session(
+  $_ENV["CLIENT_ID"],
+  $_ENV["CLIENT_SECRET"]
+);
 
 $accessToken = $_SESSION["accessToken"];
-$api->setAccessToken($accessToken);
+$refreshToken = $_SESSION["refreshToken"];
+if($accessToken) {
+  $session->setAccessToken($accessToken);
+  $session->setRefreshToken($refreshToken);
+} else {
+  // Or request a new access token
+  $session->refreshAccessToken($refreshToken);
+}
+
+$options = [
+  'auto_refresh' => true,
+];
+
+$api = new SpotifyWebAPI\SpotifyWebAPI($options, $session);
 
 $uri = $_GET["uri"];
 $operation = $_GET["operation"];
@@ -32,23 +48,14 @@ if($operation == "added") {
   ]);  
 }
 
+// tokens might've been updated
+$_SESSION["accessToken"] = $session->getAccessToken();
+$_SESSION["refreshToken"] = $session->getRefreshToken();
+
 if(! $success) {
   echo("An error has occured!");
   print_r($success);
 } else {
-  /*
-  // remove from changes
-  $changesFilePath = $_ENV["CHANGES_SAVE_FILE"];
-
-  if(file_exists($changesFilePath)) {
-    $changes = json_decode(file_get_contents($changesFilePath) ,true);
-    $filteredChanges = array_filter($changes, function($elem) use ($uri) {
-      return $uri != $elem["uri"];
-    });
-    file_put_contents($changesFilePath, json_encode($filteredChanges));
-  }
-  
-*/
   // redirect to main page
   header('Location: app.php');
 

@@ -76,10 +76,26 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
 session_start();
 
-$api = new SpotifyWebAPI\SpotifyWebAPI();
+$session = new SpotifyWebAPI\Session(
+  $_ENV["CLIENT_ID"],
+  $_ENV["CLIENT_SECRET"]
+);
 
 $accessToken = $_SESSION["accessToken"];
-$api->setAccessToken($accessToken);
+$refreshToken = $_SESSION["refreshToken"];
+if($accessToken) {
+  $session->setAccessToken($accessToken);
+  $session->setRefreshToken($refreshToken);
+} else {
+  // Or request a new access token
+  $session->refreshAccessToken($refreshToken);
+}
+
+$options = [
+  'auto_refresh' => true,
+];
+
+$api = new SpotifyWebAPI\SpotifyWebAPI($options, $session);
 
 // get songs in source playlist
 $sourceSongs = getSongsInPlaylist($api, $_ENV["SOURCE_PLAYLIST"]);
@@ -126,3 +142,7 @@ if(file_exists($saveFilePath)) {
   echo("Keine Veränderungen anzuzeigen, da erster Aufruf.");
 }
 file_put_contents($saveFilePath, json_encode($sourceSongs));
+
+// tokens might've been updated
+$_SESSION["accessToken"] = $session->getAccessToken();
+$_SESSION["refreshToken"] = $session->getRefreshToken();
