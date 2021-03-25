@@ -3,6 +3,7 @@
     "type": "project",
     "require": {
         "guzzlehttp/guzzle": "^7.3",
-        "vlucas/phpdotenv": "^5.3"
+        "vlucas/phpdotenv": "^5.3",
+        "jwilsson/spotify-web-api-php": "^4.2"
     }
 }
