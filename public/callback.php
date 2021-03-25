@@ -6,6 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
  */
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
+session_start();
 
 $session = new SpotifyWebAPI\Session(
     $_ENV["CLIENT_ID"],
@@ -14,9 +15,7 @@ $session = new SpotifyWebAPI\Session(
 );
 
 $state = $_GET['state'];
-
-// Fetch the stored state value from somewhere. A session for example
-
+$storedState = $_SESSION["state"];
 if ($state !== $storedState) {
     // The state returned isn't the same as the one we've stored, we shouldn't continue
     die('State mismatch');
@@ -25,10 +24,8 @@ if ($state !== $storedState) {
 // Request a access token using the code from Spotify
 $session->requestAccessToken($_GET['code']);
 
-$accessToken = $session->getAccessToken();
-$refreshToken = $session->getRefreshToken();
-
-// Store the access and refresh tokens somewhere. In a session for example
+$_SESSION["accessToken"] = $session->getAccessToken();
+$_SESSION["refreshToken"] = $session->getRefreshToken();
 
 // Send the user along and fetch some data!
 header('Location: app.php');
