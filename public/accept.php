@@ -1,34 +1,15 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
+require "utils.php";
 
-/*
- * Load dotenv
- */
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
-$dotenv->load();
-session_start();
+setDefaultErrorHandler();
+loadDotenv();
+$session = startSpotifySession();
+$api = createSpotifyApi($session);
 
-$session = new SpotifyWebAPI\Session(
-  $_ENV["CLIENT_ID"],
-  $_ENV["CLIENT_SECRET"]
-);
-
-$accessToken = $_SESSION["accessToken"];
-$refreshToken = $_SESSION["refreshToken"];
-if($accessToken) {
-  $session->setAccessToken($accessToken);
-  $session->setRefreshToken($refreshToken);
-} else {
-  // Or request a new access token
-  $session->refreshAccessToken($refreshToken);
+if(!isset($_GET["uri"]) || !isset($_GET["operation"])) {
+  die("Not all required parameters were supplied.");
 }
-
-$options = [
-  'auto_refresh' => true,
-];
-
-$api = new SpotifyWebAPI\SpotifyWebAPI($options, $session);
-
 $uri = $_GET["uri"];
 $operation = $_GET["operation"];
 
@@ -48,9 +29,7 @@ if($operation == "added") {
   ]);  
 }
 
-// tokens might've been updated
-$_SESSION["accessToken"] = $session->getAccessToken();
-$_SESSION["refreshToken"] = $session->getRefreshToken();
+stopSpotifySession($session);
 
 if(! $success) {
   echo("An error has occured!");

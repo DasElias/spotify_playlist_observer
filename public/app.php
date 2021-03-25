@@ -1,5 +1,11 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
+require "utils.php";
+
+setDefaultErrorHandler();
+loadDotenv();
+$session = startSpotifySession();
+$api = createSpotifyApi($session);
 
 function getSongsInPlaylist($api, $playlistId) {
   $playlist = $api->getPlaylist($playlistId);
@@ -11,24 +17,6 @@ function getSongsInPlaylist($api, $playlistId) {
     ]);
   }
   return $songs;
-}
-
-function getMissingElementsInDest($source, $dest) {
-  $missingElementsInDest = [];
-
-  foreach($source as $s) {
-    $isPresent = false;
-    foreach($dest as $d) {
-      if($s == $d) {
-        $isPresent = true;
-      }
-    }
-    if(! $isPresent) {
-      array_push($missingElementsInDest, $s);
-    }
-  }
-
-  return $missingElementsInDest;
 }
 
 function mergeCurrentWithOldChanges($current, $destinationPlaylistSongs) {
@@ -69,33 +57,7 @@ function mergeCurrentWithOldChanges($current, $destinationPlaylistSongs) {
   return $filteredChanges;
 }
 
-/*
- * Load dotenv
- */
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
-$dotenv->load();
-session_start();
 
-$session = new SpotifyWebAPI\Session(
-  $_ENV["CLIENT_ID"],
-  $_ENV["CLIENT_SECRET"]
-);
-
-$accessToken = $_SESSION["accessToken"];
-$refreshToken = $_SESSION["refreshToken"];
-if($accessToken) {
-  $session->setAccessToken($accessToken);
-  $session->setRefreshToken($refreshToken);
-} else {
-  // Or request a new access token
-  $session->refreshAccessToken($refreshToken);
-}
-
-$options = [
-  'auto_refresh' => true,
-];
-
-$api = new SpotifyWebAPI\SpotifyWebAPI($options, $session);
 
 // get songs in source playlist
 $sourceSongs = getSongsInPlaylist($api, $_ENV["SOURCE_PLAYLIST"]);
@@ -142,7 +104,4 @@ if(file_exists($saveFilePath)) {
   echo("Keine Veränderungen anzuzeigen, da erster Aufruf.");
 }
 file_put_contents($saveFilePath, json_encode($sourceSongs));
-
-// tokens might've been updated
-$_SESSION["accessToken"] = $session->getAccessToken();
-$_SESSION["refreshToken"] = $session->getRefreshToken();
+stopSpotifySession($session);
