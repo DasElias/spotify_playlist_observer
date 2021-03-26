@@ -12,22 +12,27 @@ function loadDotenv() {
 }
 
 function startSpotifySession() {
-  session_start();
-
   $session = new SpotifyWebAPI\Session(
     $_ENV["CLIENT_ID"],
     $_ENV["CLIENT_SECRET"]
   );
   
-  $accessToken = $_SESSION["accessToken"];
-  $refreshToken = $_SESSION["refreshToken"];
-  if($accessToken) {
-    $session->setAccessToken($accessToken);
-    $session->setRefreshToken($refreshToken);
+  if(isset($_SESSION["refreshToken"])) {
+    $accessToken = $_SESSION["accessToken"];
+    $refreshToken = $_SESSION["refreshToken"];
+
+    if($accessToken) {
+      $session->setAccessToken($accessToken);
+      $session->setRefreshToken($refreshToken);
+    } else {
+      // Or request a new access token
+      $session->refreshAccessToken($refreshToken);
+    }
   } else {
-    // Or request a new access token
-    $session->refreshAccessToken($refreshToken);
+    header('Location: index.php');
+    exit(0);
   }
+
   return $session;
 }
 

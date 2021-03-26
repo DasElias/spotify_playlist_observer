@@ -2,6 +2,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 require "utils.php";
 
+session_start();
 setDefaultErrorHandler();
 loadDotenv();
 

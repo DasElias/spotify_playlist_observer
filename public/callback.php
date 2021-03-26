@@ -2,6 +2,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 require "utils.php";
 
+session_start();
 setDefaultErrorHandler();
 loadDotenv();
 
@@ -10,6 +11,11 @@ $session = new SpotifyWebAPI\Session(
     $_ENV["CLIENT_SECRET"],
     $_ENV["REDIRECT_URI"]
 );
+
+if(! (isset($_GET["state"]) && isset($_SESSION["state"]))) {
+    header('Location: index.php');
+    exit(0);
+}
 
 $state = $_GET['state'];
 $storedState = $_SESSION["state"];
@@ -26,4 +32,3 @@ $_SESSION["refreshToken"] = $session->getRefreshToken();
 
 // Send the user along and fetch some data!
 header('Location: app.php');
-die();
