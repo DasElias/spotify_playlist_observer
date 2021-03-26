@@ -9,7 +9,7 @@ loadDotenv();
 $session = new SpotifyWebAPI\Session(
     $_ENV["CLIENT_ID"],
     $_ENV["CLIENT_SECRET"],
-    $_ENV["REDIRECT_URI"]
+    getRedirectUri()
 );
 
 if(! (isset($_GET["state"]) && isset($_SESSION["state"]))) {

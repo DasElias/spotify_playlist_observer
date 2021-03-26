@@ -68,3 +68,7 @@ function getMissingElementsInDest($source, $dest) {
 
   return $missingElementsInDest;
 }
+
+function getRedirectUri() {
+  return $_ENV["BASE_URL"] . "callback.php";
+}
