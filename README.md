@@ -4,4 +4,4 @@ A proof-of-concept application which displays the changes in a foreign Spotify p
 ## Installation
 1. copy `.env.example` to `.env` and set the environment variables
 2. Install PHP dependencies
-  - `composer install`
+    - `composer install`
