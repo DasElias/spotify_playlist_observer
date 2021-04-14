@@ -1,0 +1,26 @@
+{
+  "name": "spotify_playlist_forker",
+  "version": "1.0.0",
+  "description": "A proof-of-concept application which displays the changes in a foreign Spotify playlist on a webpage and allows the user to adopt them into its own playlist.",
+  "dependencies": {
+    "postcss-import": "^14.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "tailwindcss": "^2.1.1"
+  },
+  "scripts": {
+    "build": "tailwind build styles/styles.css -o public/dist/output.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DasElias/spotify_playlist_forker.git"
+  },
+  "browserslist": [
+    "last 2 versions",
+    ",> 1%",
+    "opera 12.1",
+    "bb 10",
+    "android 4"
+  ]
+}

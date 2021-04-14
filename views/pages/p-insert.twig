@@ -1,0 +1,39 @@
+{% extends 'pages/p-layout.twig' %}
+
+{% block layout %}
+	<div class="smallcontainer mx-auto " style="">
+		<h2>Playlist hinzufügen</h2>
+		<form class="w-full py-4">
+			<div class="mb-4">
+				<div class="mb-1 text-white">
+					<label class="block font-bold" for="sourcePlaylist">
+						Playlistlink der Quellplaylist
+					</label>
+					<p class="text-grey">Füge hier den Link zur Playlist eines Freundes ein, der du folgen möchtest.</p>
+				</div>
+				
+				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-black focus:outline-none focus:shadow-outline" id="sourcePlaylist" type="text">
+			</div>
+			<div class="mb-4">
+				<div class="mb-1 text-white">
+					<label class="block font-bold" for="destPlaylist">
+						Playlistlink der Quellplaylist
+					</label>
+					<p class="text-grey">Füge hier den Link zur Playlist eines Freundes ein, der du folgen möchtest.</p>
+				</div>
+				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-black focus:outline-none focus:shadow-outline" id="destPlaylist" type="text">
+			</div>
+			<div class="mt-2 mb-4 text-center">
+				<button class="btn btn-black">
+					<i class="fas fa-times mr-2" style="transform: translateY(5%);"></i>
+					Abbrechen
+				</button>
+				<button class="btn btn-green">
+					<i class="fas fa-save mr-2" style="transform: translateY(5%);"></i>
+					Speichern
+				</button>
+			</div>
+		</form>
+	</div>
+
+{% endblock %}
