@@ -1,6 +1,6 @@
 node_modules
 vendor
-dist
+public/dist
 
 # Cache files
 .phpunit.result.cache
