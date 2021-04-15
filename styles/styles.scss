@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "font.scss";
+@import "form.scss";
+
+@layer base {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 36px;
+    text-transform: none;
+  }
+}
+
+.btn {
+  @apply font-bold py-2 px-4 mx-1 rounded-full inline-flex items-center transform transition;
+}
+
+.btn:hover {
+  @apply scale-105;
+}
+
+.btn-black {
+  @apply text-white border-2 border-white;
+}
+
+.btn-green {
+  @apply text-white border-2 border-green bg-green;
+}

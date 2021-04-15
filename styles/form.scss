@@ -1,0 +1,12 @@
+.validation-error {
+  display: none;
+}
+
+.invalid ~ .validation-error {
+  display: block;
+  @apply text-green;
+}
+
+.btn:active {
+  outline: none;
+}
