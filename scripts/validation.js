@@ -11,7 +11,7 @@ function validateForm() {
   }
 
   if(! validatePlaylistLink(dest.val())) {
-    source.addClass("invalid");
+    dest.addClass("invalid");
     isValid = false;
   }
 
