@@ -5,26 +5,33 @@
 		<h2>Deine Playlists</h2>
 		<div class="flex justify-center py-4">
 			<div class="w-full">
-				<ul class="divide-y divide-grey">
+		<!--		<ul class="divide-y divide-grey">
 					{% set k = 10 %}
 					{% for i in range(1, k) %}
-						{% include "components/c-playlist.twig" %}
+						<li class="py-2">
+							<a href="viewChanges.php">
+								{% include "components/c-playlist.twig" %}
+				
+							</a>
+						</li>
 					{% endfor %}
-					<li class="p-8 text-center">
-						<button class="btn btn-green">
-							<i class="fas fa-plus mr-2" style="transform: translateY(5%);"></i>
-							<!--		  <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
-																														<svg class="fill-current w-6 h-6 mr-1" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16">
-																															<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-																					
-																														</svg>-->
-							Playlist beobachten
-						</button>
 
+				</ul>-->
+				<div class="text-center pt-9 md:pb-2 lg:pb-4">
+					<img class="w-1/6 md:w-1/8 lg:w-1/10	m-auto filter invert" src="/assets/img/playlist.svg" />
+					<p class="font-bold mt-4 mb-1">Du hast noch keine Playlists, die du beobachtest.</p>
+					<p class="text-sm">Füge jetzt eine hinzu!</p>
 
-					</li>
+				</div>
+				<div class="p-8 text-center">
+					<a href="insertPlaylist.php">
+							<button class="btn btn-green">
+								<i class="fas fa-plus mr-2" style="transform: translateY(5%);"></i>
+								Playlist beobachten
+							</button>
+						</a>
 
-				</ul>
+				</div>
 			</div>
 		</div>
 	</div>

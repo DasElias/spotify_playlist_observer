@@ -2,8 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'bootstrap-icons.scss';
 @import "font.scss";
 @import "form.scss";
+@import "changes.scss";
+@import "spoiler.scss";
+
+@mixin rounded-border-bottom($borderheight, $color, $padding: 0) {
+  padding-bottom: calc(#{$borderheight} + #{$padding});
+  position: relative;
+
+  &:after {
+    content: '';
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    background: $color;
+    height: $borderheight;
+    border-radius: ($borderheight / 2);
+  }
+};
 
 @layer base {
   h1 {
@@ -18,18 +37,100 @@
   }
 }
 
+.truncate-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (hover: hover) {
+  .group .show-on-group-hover {
+    display: none;
+  }
+  
+  .group:hover .show-on-group-hover {
+    display: block;
+  }
+}
+
 .btn {
-  @apply font-bold py-2 px-4 mx-1 rounded-full inline-flex items-center transform transition;
+  @apply font-bold py-2 px-12 mx-2 my-1 rounded-full inline-flex items-center transform transition;
 }
 
 .btn:hover {
   @apply scale-105;
 }
 
+.btn, .btn:active, .btn:focus, .btn:focus-within {
+  outline: none;
+}
+
 .btn-black {
   @apply text-white border-2 border-white;
 }
 
+.btn-black:hover {
+  @apply border-grey;
+}
+
 .btn-green {
   @apply text-white border-2 border-green bg-green;
+}
+
+.btn-green:hover {
+  @apply bg-lightgreen border-lightgreen;
+}
+
+.btn-border-green {
+  @apply text-green border-2 border-green;
+
+}
+
+.btn-border-green:hover {
+  @apply text-lightgreen border-lightgreen;
+}
+
+.btn-border-red {
+  @apply text-red border-2 border-red;
+
+}
+
+.btn-border-red:hover {
+  @apply text-lightred border-lightred;
+}
+
+.backbtn {
+  width: 40px;
+  height: 40px;
+  @apply font-bold rounded-full inline-flex items-center justify-center transform transition text-white text-2xl border-2 border-grey mr-2;
+}
+
+.backbtn:hover {
+  @apply border-white;
+}
+
+.backbtn:hover {
+  @apply scale-105;
+}
+
+
+.rounded-border-bottom-1-grey {
+  @include rounded-border-bottom(1px, #b3b3b3, 0.5rem);
+}
+
+.rounded-border-bottom-2-grey {
+  @include rounded-border-bottom(2px, #b3b3b3, 0.5rem);
+}
+
+.dropdown-menu {
+  z-index: 10;
+  position: relative;
+  display: none;
+}
+
+.dropdown:focus-within .dropdown-menu {
+  opacity:1;
+  transform: translate(0) scale(1);
+  visibility: visible;
+  display: block;
 }

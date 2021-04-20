@@ -1,0 +1,107 @@
+{% extends 'pages/p-layout.twig' %}
+
+{% block layout %}
+	<div class="smallcontainer mx-auto " style="">
+		<header>
+			<a href="listPlaylists.php">
+				<button class="backbtn">
+					<i class="fas fa-arrow-left"></i>
+				</button>
+			</a>
+			<h2 class="inline">Hinzugefügte Songs</h2>
+		</header>
+		<div class="w-full py-4">
+			<div class="border-b border-grey pb-4">
+				{% include "components/c-playlist.twig" with {'disableHover': true} %}
+			</div>
+			<div class="h-8 mt-4 mb-2 mr-2">
+				<div class="float-right relative inline-block text-left dropdown">
+					<span class="rounded-md shadow-sm">
+						<button class="playbtn inline-flex justify-center">
+							<i class="fas fa-ellipsis-h"></i>
+						</button>
+
+					</span>
+					<div class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
+						<div class="absolute right-0 w-56 mt-2 origin-top-right bg-dropdown-grey divide-y divide-grey rounded-sm shadow-3xl outline-none" role="menu">
+							<div class="py-1">
+								<a href="javascript:void(0)" tabindex="0" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Lieder übernehmen</a>
+								<a href="javascript:void(0)" tabindex="1" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Lieder ablehnen</a>
+							</div>
+							<div class="py-1">
+								<a href="javascript:void(0)" tabindex="3" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Auftrag löschen</a>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+		<!--	<ul class="divide-y divide-darkgrey">
+				<li class="changesElem">
+					<div class="h-9 flex items-center text-xs text-grey font-normal tracking-widest uppercase py-2 sm:px-2">
+						<div class="colPlay"></div>
+						<div class="colTitle">
+							Titel
+						</div>
+						<div class="colAlbum">
+							Album
+
+						</div>
+						<div class="colButtons"></div>
+					</div>
+				</li>
+				{% set k = 10 %}
+				{% for i in range(1, k) %}
+					<li class="changesElem py-1">
+						<div class="flex group rounded-md py-2 sm:px-2 hover-hover:bg-white hover:bg-opacity-10">
+							<div class="colPlay flex items-center justify-content">
+								<div class="show-on-group-hover playwrapper">
+									<button
+										class="rounded-full justify-center playbtn inline-flex" onclick="onPlayButton(this)" data-source="https://p.scdn.co/mp3-preview/a14b2a107bcd428e168944adae846bbc05fabd09?cid=db3242b094df4cfe95a57750acc0a632">
+										<i class="bi bi-play-fill text-lg" style="transform: translate(5%, -2.5%);"></i>
+									</button>
+								</div>
+								<div class="pausewrapper">
+									<button class="rounded-full justify-center playbtn inline-flex" onclick="onPauseButton(this)">
+										<i class="bi bi-pause-fill text-lg" style="transform: translate(2.5%, -2.5%);"></i>
+									</button>
+
+								</div>
+
+
+							</div>
+							<div class="colTitle items-center min-w-0">
+								<img aria-hidden="false" draggable="false" loading="eager" src="https://i.scdn.co/image/ab67616d00004851e14f11f796cef9f9a82691a7" width="40" height="40" class="mr-3">
+								<div class="min-w-0">
+									<div class="font-normal truncate-ellipsis">Sing me to Sleep</div>
+									<div class="text-sm text-grey group-hover-hover:text-white truncate-ellipsis">Avicii</div>
+								</div>
+							</div>
+							<div class="colAlbum items-center min-w-0 ">
+								<div class="text-sm text-grey group-hover-hover:text-white truncate-ellipsis">True</div>
+
+							</div>
+							<div class="colButtons items-center justify-end">
+								<button class="mr-1 sm:mr-4 rounded-full justify-center actionbtn btn-border-green" title="Änderung übernehmen">
+									<i class="fas fa-check"></i>
+								</button>
+								<button class="rounded-full justify-center actionbtn btn-border-red" title="Änderung ablehnen">
+									<i class="fas fa-times"></i>
+								</button>
+
+							</div>
+						</div>
+					</li>
+				{% endfor %}
+			</ul>-->
+			<div class="text-center pt-9">
+					<p class="font-bold mt-4 mb-1">Keine Veränderungen anzuzeigen!</p>
+					<p class="text-sm">Scheinbar wurden der Playlist &quot;Hallo&quot; von &quot;Hey&quot; keine neuen Songs hinzugefügt.</p>
+
+				</div>
+		</div>
+	</div>
+
+{% endblock %}

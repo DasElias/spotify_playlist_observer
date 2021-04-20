@@ -1,0 +1,70 @@
+.playbtn {
+  width: 32px;
+  height: 32px;
+  @apply font-bold rounded-full items-center justify-center transform transition text-white border-2 border-grey;
+}
+
+.playbtn:hover {
+  @apply border-white;
+}
+
+.playbtn:hover {
+  @apply scale-105;
+}
+
+.actionbtn {
+  width: 40px;
+  height: 40px;
+  @apply font-bold rounded-full inline-flex items-center justify-center transform transition;
+}
+
+.actionbtn:hover {
+  @apply scale-105;
+}
+
+.actionbtn:active, .actionbtn:focus, .playbtn:active, .playbtn:focus {
+  outline: none;
+}
+
+li.changesElem {
+  .colPlay {
+    // 36px + mr-1
+    width: calc(36px + 0.25rem);
+    @media (min-width: 640px) {
+      // 36px + mr-2
+      width: calc(36px + 0.5rem);
+    }
+    @apply flex-shrink-0;
+
+    .pausewrapper {
+      display: none;
+    }
+
+    &.isPlaying {
+      .playwrapper {
+        display: none;
+      }
+      .pausewrapper {
+        display: block;
+      }
+    }
+  }
+
+  .colTitle {
+    width: 100%;
+    @apply pr-4 flex;
+  }
+
+  .colAlbum {
+    width: 60%;
+    @apply pr-4 hidden md:flex;
+  }
+
+  .colButtons {
+    width: calc(40px + 0.25rem + 40px + 2px);
+    @media (min-width: 640px) {
+      width: calc(40px + 1rem + 40px + 2px);
+    }
+    @apply flex-shrink-0 flex;
+  }
+}

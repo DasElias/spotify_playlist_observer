@@ -4,9 +4,14 @@
 
 .invalid ~ .validation-error {
   display: block;
-  @apply text-green;
+  @apply text-red;
 }
 
-.btn:active {
-  outline: none;
+.placeholder-gradient::placeholder {
+  -webkit-mask-image: -webkit-gradient(linear, left center, right center, 
+    from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+}
+
+.playlistlink-dropdown {
+  width: 40rem;
 }
