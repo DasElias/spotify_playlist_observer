@@ -66,7 +66,7 @@
 								<div class="colPlay flex items-center justify-content">
 									{% set songPreview = c.track.preview_url %}
 									<div class="show-on-group-hover playwrapper">
-										<button class="rounded-full justify-center playbtn inline-flex" onclick="onPlayButton(this)" data-source="{{ songPreview|default('') }}">
+										<button class="rounded-full justify-center playbtn inline-flex" onclick="onPlayButton(this)" data-source="{{ songPreview|default('') }}" {{(songPreview is null) ? 'disabled' : ''}}>
 											<i class="bi bi-play-fill text-lg" style="transform: translate(5%, -2.5%);"></i>
 										</button>
 									</div>

@@ -12,6 +12,10 @@
   @apply scale-105;
 }
 
+.playbtn:disabled {
+  @apply transform-none text-grey border-grey cursor-default;
+}
+
 .actionbtn {
   width: 40px;
   height: 40px;
