@@ -59,6 +59,7 @@ class ApiSpotifyService extends SpotifyService {
   }
 
   public function addSongsToPlaylist($playlistId, $songUriArray) {
+    if(empty($songUriArray)) return;
     $success = $this->api->addPlaylistTracks($playlistId, $songUriArray); 
   }
 
