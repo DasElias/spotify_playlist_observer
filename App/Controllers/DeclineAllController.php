@@ -32,6 +32,7 @@ class DeclineAllController extends AbstractController {
 
       $uris = $playlist->removeAllChangesAndGetUris();
       $dbService->savePlaylist($playlist);
+      unset($_SESSION["declineAll"]);
     }
 
 

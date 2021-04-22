@@ -25,11 +25,11 @@
 					<div class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
 						<div class="absolute right-0 w-56 mt-2 origin-top-right bg-dropdown-grey divide-y divide-grey rounded-sm shadow-3xl outline-none" role="menu">
 							<div class="py-1">
-								<a href="javascript:void(0)" tabindex="0" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Lieder übernehmen</a>
-								<a href="javascript:void(0)" tabindex="1" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Lieder ablehnen</a>
+								<a href="acceptAll.php?id={{ playlistObject.getDbId() }}&amp;acceptAll=true" tabindex="0" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Lieder übernehmen</a>
+								<a href="declineAll.php?id={{ playlistObject.getDbId() }}&amp;declineAll=true" tabindex="1" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Lieder ablehnen</a>
 							</div>
 							<div class="py-1">
-								<a href="javascript:void(0)" tabindex="3" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Auftrag löschen</a>
+								<a href="deleteTask.php?id={{ playlistObject.getDbId() }}&amp;deleteTask=true" tabindex="3" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Auftrag löschen</a>
 							</div>
 						</div>
 
@@ -41,7 +41,7 @@
 			{% if playlist.trackedChanges is empty %}
 				<div class="text-center pt-9">
 					<p class="font-bold mt-4 mb-1">Keine Veränderungen anzuzeigen!</p>
-					<p class="text-sm">Scheinbar wurden der Playlist &quot;{{ playlist.sourceName }}&quot; von &quot;{{ playlist.sourceOwner }}&quot; keine neuen Songs hinzugefügt.</p>
+					<p class="text-sm">Scheinbar wurden der Playlist &quot;{{ playlist.sourceName }}&quot; von &quot;{{ playlist.sourceOwner.display_name }}&quot; keine neuen Songs hinzugefügt.</p>
 
 				</div>
 

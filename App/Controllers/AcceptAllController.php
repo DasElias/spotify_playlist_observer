@@ -35,6 +35,7 @@ class AcceptAllController extends AbstractController {
         $uris = $playlist->removeAllChangesAndGetUris();
         $spotifyService->addSongsToPlaylist($playlist->getDestId(), $uris);
         $dbService->savePlaylist($playlist);
+        unset($_SESSION["acceptAll"]);
       }
      
 

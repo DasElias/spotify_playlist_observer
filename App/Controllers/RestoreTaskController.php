@@ -3,7 +3,7 @@ namespace App\Controllers;
 use App\Models\{WatchedPlaylist, ImageChooser};
 use App\Services\{ApiSpotifyService, DatabaseService, RefreshTokenNotSetException};
 
-class DeleteTaskController extends AbstractController {
+class RestoreTaskController extends AbstractController {
 
   public function __construct() {
     parent::__construct();
@@ -32,6 +32,7 @@ class DeleteTaskController extends AbstractController {
 
       $playlist->restore();
       $dbService->savePlaylist($playlist);
+      unset($_SESSION["restoreTask"]);
     }
 
 
