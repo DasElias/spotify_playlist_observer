@@ -11,11 +11,17 @@
 			<h2 class="inline">Playlist hinzufügen</h2>
 		</header>
 
+
+
+		{% if errorMsg is not null %}
+			{% include "components/c-error.twig" with {"title": "Fehler!", "text": errorMsg} %}
+		{% endif %}
+
 		<div class="py-4">
 					{% include "components/c-linkhelp.twig" %}
 		</div>
 
-		<form class="w-full py-4" onsubmit="return validateForm()" autocomplete="off">
+		<form class="w-full py-4" target="insertPlaylist.php" method="post" onsubmit="return validateForm()" autocomplete="off">
 			<div class="mb-4">
 				<div class="mb-1 text-white">
 					<label class="block font-bold" for="sourcePlaylist">
@@ -25,7 +31,7 @@
 
 				</div>
 
-				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-black focus:outline-none focus:shadow-outline placeholder-gradient" id="sourcePlaylist" type="text" placeholder="https://open.spotify.com/playlist/XXXXXXXXXXXXXXXXXXXXXX?si=XXXXXXXXXXXXXXXXXXXXXX">
+				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-black focus:outline-none focus:shadow-outline placeholder-gradient" id="sourcePlaylist" name="sourcePlaylist" type="text" placeholder="https://open.spotify.com/playlist/XXXXXXXXXXXXXXXXXXXXXX?si=XXXXXXXXXXXXXXXXXXXXXX">
 				<p class="validation-error">Kein gültiger Playlistlink!</p>
 			</div>
 			<div class="mb-4">
@@ -35,7 +41,7 @@
 					</label>
 					<p class="text-grey">Füge hier den Link zur deiner eigenen Playlist ein, in die du Lieder einfügen möchtest.</p>
 				</div>
-				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-black focus:outline-none focus:shadow-outline placeholder-gradient" id="destPlaylist" type="text" placeholder="https://open.spotify.com/playlist/XXXXXXXXXXXXXXXXXXXXXX?si=XXXXXXXXXXXXXXXXXXXXXX">
+				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-black focus:outline-none focus:shadow-outline placeholder-gradient" id="destPlaylist" name="destPlaylist" type="text" placeholder="https://open.spotify.com/playlist/XXXXXXXXXXXXXXXXXXXXXX?si=XXXXXXXXXXXXXXXXXXXXXX">
 				<p class="validation-error">Kein gültiger Playlistlink!</p>
 			</div>
 			<div class="pt-8 text-center">

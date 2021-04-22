@@ -21,6 +21,5 @@ function validateForm() {
 
 function validatePlaylistLink(input) {
   const isValidLink = /^(https:\/\/open\.spotify\.com\/playlist\/.*\?si=.*)$/.test(input);
-  const isValidUri = /^(spotify:playlist:.*)$/.test(input);
-  return isValidLink || isValidUri;
+  return isValidLink;
 }

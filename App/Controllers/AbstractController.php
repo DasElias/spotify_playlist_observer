@@ -5,22 +5,40 @@ use App\TwigFactory;
 use Dotenv\Dotenv;
 
 abstract class AbstractController {
-  protected $twig;
-
   public function __construct() {
-    // Load dotenv
-    $dotenv = Dotenv::createImmutable(__DIR__ . "/../..");
-    $dotenv->load();
+    $this->loadDotenv();
+    $this->setExceptionHandler();
+    session_start();
+  }
 
-    // Load twig
+  protected function loadTwig() {
     $dir = __DIR__ . "/../../views";
     $factory = new TwigFactory();
-    $this->twig = $factory->create($dir, null);
+    return $factory->create($dir, null);
   }
 
   protected function redirect($url) {
     header("Location: " . $url);
   }
+
+  private function loadDotenv() {
+    $dotenv = Dotenv::createImmutable(__DIR__ . "/../..");
+    $dotenv->load();
+  }
+
+  private function setExceptionHandler() {
+    if($_ENV["ENVIRONMENT"] == "production") {
+      set_exception_handler(function() {
+        require("500.php");
+        exit(-1);
+      });
+      set_error_handler(function() {
+        require("500.php");
+        exit(-1);
+      });
+    }
+  }  
+
 }
 
 ?>

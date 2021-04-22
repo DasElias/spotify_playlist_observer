@@ -5,31 +5,34 @@
 		<h2>Deine Playlists</h2>
 		<div class="flex justify-center py-4">
 			<div class="w-full">
-		<!--		<ul class="divide-y divide-grey">
-					{% set k = 10 %}
-					{% for i in range(1, k) %}
-						<li class="py-2">
-							<a href="viewChanges.php">
-								{% include "components/c-playlist.twig" %}
-				
-							</a>
-						</li>
-					{% endfor %}
+				{% if playlists is empty %}
+					<div class="text-center pt-9 md:pb-2 lg:pb-4">
+						<img class="w-1/6 md:w-1/8 lg:w-1/10	m-auto filter invert" src="/assets/img/playlist.svg"/>
+						<p class="font-bold mt-4 mb-1">Du hast noch keine Playlists, die du beobachtest.</p>
+						<p class="text-sm">Füge jetzt eine hinzu!</p>
 
-				</ul>-->
-				<div class="text-center pt-9 md:pb-2 lg:pb-4">
-					<img class="w-1/6 md:w-1/8 lg:w-1/10	m-auto filter invert" src="/assets/img/playlist.svg" />
-					<p class="font-bold mt-4 mb-1">Du hast noch keine Playlists, die du beobachtest.</p>
-					<p class="text-sm">Füge jetzt eine hinzu!</p>
+					</div>
 
-				</div>
+				{% else %}
+					<ul class="divide-y divide-grey">
+						{% for p in playlists %}
+							<li class="py-2">
+								<a href="viewChanges.php?id={{p._id}}">
+									{% include "components/c-playlist.twig" with {"playlist": p} %}
+								</a>
+							</li>
+						{% endfor %}
+
+					</ul>
+				{% endif %}
+
 				<div class="p-8 text-center">
 					<a href="insertPlaylist.php">
-							<button class="btn btn-green">
-								<i class="fas fa-plus mr-2" style="transform: translateY(5%);"></i>
-								Playlist beobachten
-							</button>
-						</a>
+						<button class="btn btn-green">
+							<i class="fas fa-plus mr-2" style="transform: translateY(5%);"></i>
+							Playlist beobachten
+						</button>
+					</a>
 
 				</div>
 			</div>

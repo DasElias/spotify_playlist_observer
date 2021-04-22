@@ -1,22 +1,27 @@
-<div
-		class="group rounded-md p-2 {{ disableHover != true ? 'hover-hover:bg-white hover:bg-opacity-10 cursor-pointer' :'' }} grid grid-cols-12">
-		<div class="col-span-5 flex flex-row items-center">
-			<img class="w-14 h-14 sm:w-20 sm:h-20" aria-hidden="false" draggable="false" loading="lazy" src="https://mosaic.scdn.co/640/ab67616d00001e0280acdfd4473ad9b44ca29d94ab67616d00001e02b11030b32abcfaa097e41be9ab67616d00001e02c6250f76546119b8fd3d07d1ab67616d00001e02e14f11f796cef9f9a82691a7">
-			<div class="px-3">
-				<span class="block font-bold">Hallo</span>
-				<span class="block text-grey text-sm {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">Hey</span>
-			</div>
+<div class="group rounded-md p-2 {{ disableHover != true ? 'hover-hover:bg-white hover:bg-opacity-10 cursor-pointer' :'' }} grid grid-cols-12">
+	<div class="col-span-5 flex flex-row items-center">
+		<div class="w-14 h-14 sm:w-20 sm:h-20">
+			{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.sourceImages, 80)} %}
 		</div>
-		<div class="col-span-2 flex justify-center items-center text-white">
-			<svg class="fill-current w-6 h-6 sm:w-12 sm:h-12" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16">
-				<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-			</svg>
-		</div>
-		<div class="col-span-5 flex flex-row-reverse items-center">
-			<img class="w-14 h-14 sm:w-20 sm:h-20" aria-hidden="false" draggable="false" loading="lazy" src="https://mosaic.scdn.co/640/ab67616d00001e0280acdfd4473ad9b44ca29d94ab67616d00001e02b11030b32abcfaa097e41be9ab67616d00001e02c6250f76546119b8fd3d07d1ab67616d00001e02e14f11f796cef9f9a82691a7">
-			<div class="px-3">
-				<span class="block font-bold text-right">Hallo</span>
-				<span class="block text-grey text-sm text-right {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">Hey</span>
-			</div>
+		<div class="px-3">
+			<span class="block font-bold">{{ playlist.sourceName }}</span>
+			<span class="block text-grey text-sm {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
+				{{ playlist.sourceOwner.display_name }}</span>
 		</div>
 	</div>
+	<div class="col-span-2 flex justify-center items-center text-white">
+		<svg class="fill-current w-6 h-6 sm:w-12 sm:h-12" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16">
+			<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+		</svg>
+	</div>
+	<div class="col-span-5 flex flex-row-reverse items-center">
+		<div class="w-14 h-14 sm:w-20 sm:h-20">
+			{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.destImages, 80)} %}
+		</div>
+		<div class="px-3">
+			<span class="block font-bold text-right">{{ playlist.destName }}</span>
+			<span class="block text-grey text-sm text-right {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
+				{{ playlist.destOwner.display_name }}</span>
+		</div>
+	</div>
+</div>

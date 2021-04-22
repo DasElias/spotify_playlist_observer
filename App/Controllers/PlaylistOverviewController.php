@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
-
+use App\Services\DatabaseService;
+use App\Models\ImageChooser;
 
 class PlaylistOverviewController extends AbstractController {
 
@@ -11,10 +12,16 @@ class PlaylistOverviewController extends AbstractController {
 
 
   public function show() {
-    $params = [
+    $dbService = new DatabaseService(); 
+    $playlists = $dbService->getPlaylistsAsDocuments();
 
+    $params = [
+      "playlists" => $playlists,
+      "imageChooser" => new ImageChooser()
     ];
-    echo $this->twig->render("pages/p-playlistoverview.twig", $params);
+    
+    $twig = $this->loadTwig();
+    echo $twig->render("pages/p-playlistoverview.twig", $params);
   }
 
 }

@@ -5,7 +5,8 @@
         "guzzlehttp/guzzle": "^7.3",
         "vlucas/phpdotenv": "^5.3",
         "jwilsson/spotify-web-api-php": "^4.2",
-        "twig/twig": "^3.3"
+        "twig/twig": "^3.3",
+        "mongodb/mongodb": "^1.8"
     },
     "autoload": {
         "psr-4": {

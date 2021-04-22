@@ -19,7 +19,8 @@ module.exports = {
       'lightred': '#ff0000',
       'dropdown-grey': '#282828',
       'dropdown-grey-hover': '#3E3E3E',
-      'dropdown-white': '#EAEAEA'
+      'dropdown-white': '#EAEAEA',
+      'music-grey': '#404040'
     },
     fontFamily: {
       sans: ['Lato', 'Arial', 'sans-serif']

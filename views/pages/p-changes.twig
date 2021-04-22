@@ -38,69 +38,78 @@
 				</div>
 			</div>
 
-		<!--	<ul class="divide-y divide-darkgrey">
-				<li class="changesElem">
-					<div class="h-9 flex items-center text-xs text-grey font-normal tracking-widest uppercase py-2 sm:px-2">
-						<div class="colPlay"></div>
-						<div class="colTitle">
-							Titel
-						</div>
-						<div class="colAlbum">
-							Album
-
-						</div>
-						<div class="colButtons"></div>
-					</div>
-				</li>
-				{% set k = 10 %}
-				{% for i in range(1, k) %}
-					<li class="changesElem py-1">
-						<div class="flex group rounded-md py-2 sm:px-2 hover-hover:bg-white hover:bg-opacity-10">
-							<div class="colPlay flex items-center justify-content">
-								<div class="show-on-group-hover playwrapper">
-									<button
-										class="rounded-full justify-center playbtn inline-flex" onclick="onPlayButton(this)" data-source="https://p.scdn.co/mp3-preview/a14b2a107bcd428e168944adae846bbc05fabd09?cid=db3242b094df4cfe95a57750acc0a632">
-										<i class="bi bi-play-fill text-lg" style="transform: translate(5%, -2.5%);"></i>
-									</button>
-								</div>
-								<div class="pausewrapper">
-									<button class="rounded-full justify-center playbtn inline-flex" onclick="onPauseButton(this)">
-										<i class="bi bi-pause-fill text-lg" style="transform: translate(2.5%, -2.5%);"></i>
-									</button>
-
-								</div>
-
-
-							</div>
-							<div class="colTitle items-center min-w-0">
-								<img aria-hidden="false" draggable="false" loading="eager" src="https://i.scdn.co/image/ab67616d00004851e14f11f796cef9f9a82691a7" width="40" height="40" class="mr-3">
-								<div class="min-w-0">
-									<div class="font-normal truncate-ellipsis">Sing me to Sleep</div>
-									<div class="text-sm text-grey group-hover-hover:text-white truncate-ellipsis">Avicii</div>
-								</div>
-							</div>
-							<div class="colAlbum items-center min-w-0 ">
-								<div class="text-sm text-grey group-hover-hover:text-white truncate-ellipsis">True</div>
-
-							</div>
-							<div class="colButtons items-center justify-end">
-								<button class="mr-1 sm:mr-4 rounded-full justify-center actionbtn btn-border-green" title="Änderung übernehmen">
-									<i class="fas fa-check"></i>
-								</button>
-								<button class="rounded-full justify-center actionbtn btn-border-red" title="Änderung ablehnen">
-									<i class="fas fa-times"></i>
-								</button>
-
-							</div>
-						</div>
-					</li>
-				{% endfor %}
-			</ul>-->
-			<div class="text-center pt-9">
+			{% if playlist.trackedChanges is empty %}
+				<div class="text-center pt-9">
 					<p class="font-bold mt-4 mb-1">Keine Veränderungen anzuzeigen!</p>
-					<p class="text-sm">Scheinbar wurden der Playlist &quot;Hallo&quot; von &quot;Hey&quot; keine neuen Songs hinzugefügt.</p>
+					<p class="text-sm">Scheinbar wurden der Playlist &quot;{{ playlist.sourceName }}&quot; von &quot;{{ playlist.sourceOwner }}&quot; keine neuen Songs hinzugefügt.</p>
 
 				</div>
+
+			{% else %}
+				<ul class="divide-y divide-darkgrey">
+					<li class="changesElem">
+						<div class="h-9 flex items-center text-xs text-grey font-normal tracking-widest uppercase py-2 sm:px-2">
+							<div class="colPlay"></div>
+							<div class="colTitle">
+								Titel
+							</div>
+							<div class="colAlbum">
+								Album
+
+							</div>
+							<div class="colButtons"></div>
+						</div>
+					</li>
+					{% for c in playlist.trackedChanges %}
+						<li class="changesElem py-1">
+							<div class="flex group rounded-md py-2 sm:px-2 hover-hover:bg-white hover:bg-opacity-10">
+								<div class="colPlay flex items-center justify-content">
+									{% set songPreview = c.track.preview_url %}
+									<div class="show-on-group-hover playwrapper">
+										<button class="rounded-full justify-center playbtn inline-flex" onclick="onPlayButton(this)" data-source="{{ songPreview|default('') }}">
+											<i class="bi bi-play-fill text-lg" style="transform: translate(5%, -2.5%);"></i>
+										</button>
+									</div>
+									<div class="pausewrapper">
+										<button class="rounded-full justify-center playbtn inline-flex" onclick="onPauseButton(this)">
+											<i class="bi bi-pause-fill text-lg" style="transform: translate(2.5%, -2.5%);"></i>
+										</button>
+
+									</div>
+
+
+								</div>
+								<div class="colTitle items-center min-w-0">
+									<div class="w-10 h-10 mr-3">
+										{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(c.track.album.images, 40)} %}
+									</div>
+									<div class="min-w-0">
+										<div class="font-normal truncate-ellipsis">{{ c.track.name }}</div>
+										<div class="text-sm text-grey group-hover-hover:text-white truncate-ellipsis">{{ playlistObject.getArtistString(c) }}</div>
+									</div>
+								</div>
+								<div class="colAlbum items-center min-w-0 ">
+									<div class="text-sm text-grey group-hover-hover:text-white truncate-ellipsis">{{ c.track.album.name }}</div>
+
+								</div>
+								<div class="colButtons items-center justify-end">
+									<a href="acceptSong.php?id={{ playlistObject.getDbId() }}&amp;songUri={{ c.track.uri }}" class="mr-1 sm:mr-4 rounded-full justify-center actionbtn btn-border-green" title="Änderung übernehmen">
+										<i class="fas fa-check"></i>
+									</a>
+									<a href="declineSong.php?id={{ playlistObject.getDbId() }}&amp;songUri={{ c.track.uri }}" class="rounded-full justify-center actionbtn btn-border-red" title="Änderung ablehnen">
+										<i class="fas fa-times"></i>
+									</a>
+
+								</div>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+
+			{% endif %}
+
+			<!--	-->
+
 		</div>
 	</div>
 
