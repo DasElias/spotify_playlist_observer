@@ -40,7 +40,7 @@ class DatabaseService {
 
   public function savePlaylist($playlist) {
     $this->collection->replaceOne(
-      ["_id" => $playlist->getDbId() == null ? null : new ObjectId($playlist->getDbId()) ],
+      ["_id" => $playlist->getDbId() == null ? new ObjectId() : new ObjectId($playlist->getDbId()) ],
       $playlist->getDocument(),
       ["upsert" => true]
     );
