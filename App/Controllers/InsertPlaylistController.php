@@ -47,7 +47,7 @@ class InsertPlaylistController extends AbstractController {
         }
 
         $dbService->savePlaylist($playlist);
-        $successfullySaved = true;
+        $this->redirect("listPlaylists.php");
       } catch(UnauthorizedException $e) {
         $errorMsg = "Du hast entweder auf die Quell- oder die Zielplaylist keinen Zugriff.";
         goto render;
