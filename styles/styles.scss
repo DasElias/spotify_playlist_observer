@@ -78,7 +78,7 @@ button, button:active, button:focus, button:focus-within {
 }
 
 .btn-green:hover {
-  @apply bg-lightgreen border-lightgreen;
+  @apply bg-green-light border-green-light;
 }
 
 .btn-border-green {
@@ -87,7 +87,7 @@ button, button:active, button:focus, button:focus-within {
 }
 
 .btn-border-green:hover {
-  @apply text-lightgreen border-lightgreen;
+  @apply text-green-light border-green-light;
 }
 
 .btn-border-red {
@@ -96,7 +96,7 @@ button, button:active, button:focus, button:focus-within {
 }
 
 .btn-border-red:hover {
-  @apply text-lightred border-lightred;
+  @apply text-red-light border-red-light;
 }
 
 .backbtn {

@@ -7,20 +7,34 @@ module.exports = {
   theme: {
     colors: {
       'transparent': 'transparent',
-      'lightgreen': '#1ED760',
-      'green': '#1DB954',
       'black': '#121212',
-      'white': '#ffffff',
-      'grey': '#b3b3b3',
-      'darkgrey': '#2d3748',
-      'darkgreen': '#3E6472',
-      'magenta': '#A82690',
-      'red': '#DF0000',
-      'lightred': '#ff0000',
-      'dropdown-grey': '#282828',
-      'dropdown-grey-hover': '#3E3E3E',
-      'dropdown-white': '#EAEAEA',
-      'music-grey': '#404040'
+      'white': {
+        'DEFAULT': '#ffffff',
+        'beige': '#EAEAEA',
+      },
+      'grey': {
+        'DEFAULT': '#B3B3B3',
+      },
+      'darkgrey': {
+        '100': '#404040',
+        '200': '#3E3E3E',
+        '300': '#333333',
+        '400': '#282828'
+      },
+      'darkblue': {
+        'DEFAULT': '#2d3748',
+      },
+      'green': {
+        'light': '#1ED760',
+        'DEFAULT': '#1DB954',
+      },
+      'red': {
+        'light': 'ff0000',
+        'DEFAULT': '#DF0000',
+      },
+      'magenta': {
+        'DEFAULT': '#A82690'
+      }
     },
     fontFamily: {
       sans: ['Lato', 'Arial', 'sans-serif']

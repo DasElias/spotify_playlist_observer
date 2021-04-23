@@ -6,21 +6,33 @@ input[id^="spoiler"]+label {
   @apply pt-2 transition-all border-b-2 border-green;
   display: block;
   cursor: pointer;
+
+  .closeIcon {
+    display: none;
+  }
 }
 
 input[id^="spoiler"]:checked~label {
   width: 100%;
-  @apply pl-4 rounded-t-lg bg-darkgrey;
+  @apply pl-4 pr-4 rounded-t-lg bg-darkgrey-300;
+
+  .closeIcon {
+    display: block;
+  }
 }
 
 
 
 input[id^="spoiler"]~.spoiler {
   width: 100%;
-  @apply rounded-b-lg transition-all bg-darkgrey;
+  @apply rounded-b-lg transition-all bg-darkgrey-300;
   height: 0;
   overflow: hidden;
   opacity: 0;
+
+  img {
+    max-width: 600px;
+  }
 }
 
 input[id^="spoiler"]:checked+label+.spoiler {

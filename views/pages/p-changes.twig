@@ -23,13 +23,13 @@
 
 					</span>
 					<div class="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
-						<div class="absolute right-0 w-56 mt-2 origin-top-right bg-dropdown-grey divide-y divide-grey rounded-sm shadow-3xl outline-none" role="menu">
+						<div class="absolute right-0 w-56 mt-2 origin-top-right bg-darkgrey-400 divide-y divide-grey rounded-sm shadow-3xl outline-none" role="menu">
 							<div class="py-1">
-								<a href="acceptAll.php?id={{ playlistObject.getDbId() }}&amp;acceptAll=true" tabindex="0" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Songs übernehmen</a>
-								<a href="declineAll.php?id={{ playlistObject.getDbId() }}&amp;declineAll=true" tabindex="1" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Songs ablehnen</a>
+								<a href="acceptAll.php?id={{ playlistObject.getDbId() }}&amp;acceptAll=true" tabindex="0" class="text-white-beige hover-hover:bg-darkgrey-400-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Songs übernehmen</a>
+								<a href="declineAll.php?id={{ playlistObject.getDbId() }}&amp;declineAll=true" tabindex="1" class="text-white-beige hover-hover:bg-darkgrey-400-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Alle Songs ablehnen</a>
 							</div>
 							<div class="py-1">
-								<a href="deleteTask.php?id={{ playlistObject.getDbId() }}&amp;deleteTask=true" tabindex="3" class="text-dropdown-white hover-hover:bg-dropdown-grey-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Auftrag löschen</a>
+								<a href="deleteTask.php?id={{ playlistObject.getDbId() }}&amp;deleteTask=true" tabindex="3" class="text-white-beige hover-hover:bg-darkgrey-400-hover flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem">Auftrag löschen</a>
 							</div>
 						</div>
 
@@ -46,7 +46,7 @@
 				</div>
 
 			{% else %}
-				<ul class="divide-y divide-darkgrey">
+				<ul class="divide-y divide-darkblue">
 					<li class="changesElem">
 						<div class="h-9 flex items-center text-xs text-grey font-normal tracking-widest uppercase py-2 sm:px-2">
 							<div class="colPlay"></div>
