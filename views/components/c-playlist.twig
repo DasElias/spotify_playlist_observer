@@ -3,10 +3,10 @@
 		<div class="w-14 h-14 sm:w-20 sm:h-20">
 			{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.sourceImages, 80)} %}
 		</div>
-		<div class="px-3">
-			<span class="block font-bold">{{ playlist.sourceName }}</span>
-			<span class="block text-grey text-sm {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
-				{{ playlist.sourceOwner.display_name }}</span>
+		<div class="px-3 min-w-0">
+			<div class="block font-bold truncate-ellipsis">{{ playlist.sourceName }}</div>
+			<div class="block text-grey text-sm truncate-ellipsis {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
+				{{ playlist.sourceOwner.display_name }}</div>
 		</div>
 	</div>
 	<div class="col-span-2 flex justify-center items-center text-white">
@@ -18,10 +18,10 @@
 		<div class="w-14 h-14 sm:w-20 sm:h-20">
 			{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.destImages, 80)} %}
 		</div>
-		<div class="px-3">
-			<span class="block font-bold text-right">{{ playlist.destName }}</span>
-			<span class="block text-grey text-sm text-right {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
-				{{ playlist.destOwner.display_name }}</span>
+		<div class="px-3 min-w-0">
+			<div class="block font-bold text-right truncate-ellipsis">{{ playlist.destName }}</div>
+			<div class="block text-grey text-sm text-right truncate-ellipsis {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
+				{{ playlist.destOwner.display_name }}</div>
 		</div>
 	</div>
 </div>
