@@ -35,6 +35,22 @@ class WatchedPlaylist {
     return $dbDocument;
   }
 
+  /*
+   * in order to make sure that the links for the album cover and the preview don't expire,
+   * we overwrite them every time in case they have changed
+   */
+  private static function updateChangeLinks($dbDocument, $srcApiResponse) {
+    foreach($dbDocument["trackedChanges"] as $key => $s) {
+      foreach($srcApiResponse["tracks"]["items"] as $r) {
+        if($s["track"]["id"] == $r["track"]["id"]) {
+          $songs["trackedChanges"][$key] = $r;
+          break;
+        }
+      }
+    }
+    return $dbDocument;
+  }
+
   private static function findSongsNotPresentInDest($source, $dest) {
     $added = [];
 
@@ -62,6 +78,8 @@ class WatchedPlaylist {
 
   public function update($srcApiResponse, $destApiResponse) {
     $this->dbDocument = WatchedPlaylist::writeMetadata($this->dbDocument, $srcApiResponse, $destApiResponse);
+    $this->dbDocument = WatchedPlaylist::updateChangeLinks($this->dbDocument, $srcApiResponse);
+
     $currentSourceTracks = $srcApiResponse["tracks"]["items"];
     $destTracks = $destApiResponse["tracks"]["items"];
 
