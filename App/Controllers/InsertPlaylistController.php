@@ -23,6 +23,10 @@ class InsertPlaylistController extends AbstractController {
         $errorMsg = "Eine der beiden eingegebenen Playlistlinks hat ein ungültiges Format.";
         goto render;
       }
+      if($sourcePlaylistId == $destPlaylistId) {
+        $errorMsg = "Quell- und Zielplaylist können nicht identisch sein.";
+        goto render;
+      }
 
       try {
         $spotifyService = new ApiSpotifyService();
