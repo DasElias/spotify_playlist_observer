@@ -1,6 +1,7 @@
 {
     "name": "elias/spotify_playlist_forker",
     "type": "project",
+    "description": "",
     "require": {
         "guzzlehttp/guzzle": "^7.3",
         "vlucas/phpdotenv": "^5.3",
