@@ -7,6 +7,7 @@
 @import "form.scss";
 @import "changes.scss";
 @import "spoiler.scss";
+@import "errorpage.scss";
 
 @mixin rounded-border-bottom($borderheight, $color, $padding: 0) {
   padding-bottom: calc(#{$borderheight} + #{$padding});
@@ -27,6 +28,10 @@
 @layer base {
   h1 {
     @apply text-2xl;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 40px;
+    text-transform: none;
   }
   h2 {
     @apply text-xl;
@@ -35,6 +40,10 @@
     line-height: 36px;
     text-transform: none;
   }
+}
+
+.site-background {
+  background-image: linear-gradient(180deg, rgba(62, 100, 114,0.5) 0%, #121212 30%, #121212 100%);
 }
 
 .truncate-ellipsis {
