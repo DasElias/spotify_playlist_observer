@@ -46,8 +46,10 @@ class ApiSpotifyService extends SpotifyService {
 
   public function getPlaylist($playlistId) {
     try {
-      // collaborative,name,id,images,owner(display_name,id),tracks(items(track(name,id,uri,preview_url,album(name, images),artists(id, name))))
-      return $this->api->getPlaylist($playlistId);
+      return $this->api->getPlaylist($playlistId, [
+        "fields" => "collaborative,name,id,images,owner(display_name,id),tracks(items(track(name,id,uri,preview_url,album(name, images),artists(id, name))))",
+        "market" => $_ENV["MARKET"]
+      ]);
     } catch(SpotifyWebAPIAuthException $e) {
       throw new UnauthorizedException("Can't access playlist " . $playlistId, $e->getCode(), $e);
     } catch(SpotifyWebAPIException $e) {
