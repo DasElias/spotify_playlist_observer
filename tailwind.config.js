@@ -98,7 +98,10 @@ module.exports = {
     function({ addComponents }) {
       addComponents({
         '.smallcontainer': {
-          maxWidth: 'calc(100% - 40px)',
+          maxWidth: 'calc(100% - 25px)',
+          '@screen xs': {
+            maxWidth: 'calc(100% - 40px)',
+          },
           '@screen sm': {
             maxWidth: '600px',
           },
