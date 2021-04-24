@@ -5,7 +5,7 @@ $(function() {
     $(".dropdown").each(function() {
       var dd = $(this);
       var btn = dd.find(".dropdown-toggle");
-      btn.click(function() {
+      btn.on('click touch', function() {
         dd.addClass("dropdown-visible");
       });
     });
