@@ -52,6 +52,10 @@ module.exports = {
       '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',
     },
     extend: {
+      screens: {
+        '2xs': '320px',
+        'xs': '480px'
+      },
       minWidth: {
         '0.5': '0.125rem',
         '1': '0.25rem',
