@@ -138,7 +138,7 @@ button, button:active, button:focus, button:focus-within {
   display: none;
 }
 
-.dropdown:focus-within .dropdown-menu {
+.dropdown:focus-within .dropdown-menu, .dropdown.dropdown-visible .dropdown-menu {
   opacity:1;
   transform: translate(0) scale(1);
   visibility: visible;
