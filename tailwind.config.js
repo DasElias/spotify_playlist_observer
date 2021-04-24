@@ -91,7 +91,8 @@ module.exports = {
 
     extend: {
       backgroundColor: ["hover-hover", "group-hover-hover"],
-      textColor: ["hover-hover", "group-hover-hover"]
+      textColor: ["hover-hover", "group-hover-hover"],
+      display: ["hover-none"]
     }
   },
   plugins: [
