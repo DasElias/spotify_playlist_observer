@@ -1,5 +1,5 @@
 {
-    "name": "elias/spotify_playlist_forker",
+    "name": "elias/spotify_playlist_observer",
     "type": "project",
     "description": "",
     "require": {

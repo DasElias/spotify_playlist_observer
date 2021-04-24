@@ -1,4 +1,4 @@
-# spotify-playlist-forker
+# spotify-playlist-observer
 A proof-of-concept application which displays the changes in a foreign Spotify playlist on a webpage and allows the user to adopt them into its own playlist.
 
 ## Requirements

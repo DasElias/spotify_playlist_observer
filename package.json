@@ -1,5 +1,5 @@
 {
-  "name": "spotify_playlist_forker",
+  "name": "spotify_playlist_observer",
   "version": "1.0.0",
   "description": "A proof-of-concept application which displays the changes in a foreign Spotify playlist on a webpage and allows the user to adopt them into its own playlist.",
   "main": "gulpfile.js",
@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DasElias/spotify_playlist_forker.git"
+    "url": "git+https://github.com/DasElias/spotify_playlist_observer.git"
   },
   "browserslist": [
     "last 2 versions",
