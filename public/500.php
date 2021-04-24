@@ -17,8 +17,8 @@
   </head>
 
   <body>
-    <div class="min-h-screen bg-black text-white bg-fixed">
-		  <div class="min-h-screen bg-fixed site-background flex">
+    <div class="min-h-screen text-white bg-fixed">
+		  <div class="min-h-screen site-background flex">
         <div class="smallcontainer m-auto">
           <div class="grid grid-cols-4 pb-32">
             <div class="col-span-1 sadsmiley">
