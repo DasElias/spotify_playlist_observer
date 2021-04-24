@@ -1,10 +1,24 @@
 {% extends 'pages/p-base.twig' %}
 
 {% block body %}
-	<div class="min-h-screen bg-black text-white bg-fixed">
-		<div class="min-h-screen py-16 bg-fixed site-background">
-            	{% block layout %}{% endblock %}
-            </div>
+	<div class="min-h-screen bg-black text-grey bg-fixed">
+		<div class="min-h-screen pt-16 bg-fixed site-background">
+			<main>
+				<div class="pb-16">
+					{% block layout %}{% endblock %}
+				</div>
+			</main>
+			<footer class="content-footer w-full text-center pb-4 color-green">
+				<div class="smallcontainer mx-auto">
+					<span>Powered by <a href="spotify.com" class="underline">Spotify</a></span>
+					&middot;
+					<a href="/about" class="underline">Impressum</a>
+					&middot;
+					<a href="/privacy" class="underline">Datenschutzerklärung</a>
+				</div>
+			</footer>
+		</div>
 	</div>
+
 
 {% endblock %}

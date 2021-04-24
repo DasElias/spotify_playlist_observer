@@ -8,6 +8,7 @@
 @import "changes.scss";
 @import "spoiler.scss";
 @import "errorpage.scss";
+@import "footer.scss";
 
 @mixin rounded-border-bottom($borderheight, $color, $padding: 0) {
   padding-bottom: calc(#{$borderheight} + #{$padding});
