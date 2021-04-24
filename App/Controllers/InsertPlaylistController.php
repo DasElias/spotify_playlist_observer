@@ -37,9 +37,9 @@ class InsertPlaylistController extends AbstractController {
 
         if($destPlaylist["owner"]["id"] != $me["id"]) {
           if($destPlaylist["collaborative"]) {
-            $errorMsg = "Du hast nicht die erforderlichen Rechte, Songs zur Zielplaylist hinzuzufügen. Leider kann momentan nur der Eigentümer von gemeinsamen Playlists diese als Zielplaylist auswählen";
+            $errorMsg = "Du hast nicht die erforderlichen Rechte, Songs zur Zielplaylist (\"" . $destPlaylist['name'] . "\" von \"" . $destPlaylist["owner"]["display_name"] . "\") hinzuzufügen. Leider kann momentan nur der Eigentümer von gemeinsamen Playlists diese als Zielplaylist auswählen";
           } else {
-            $errorMsg = "Du hast nicht die erforderlichen Rechte, Songs zur Zielplaylist hinzuzufügen.";
+            $errorMsg = "Du hast nicht die erforderlichen Rechte, Songs zur Zielplaylist (\"" . $destPlaylist['name'] . "\" von \"" . $destPlaylist["owner"]["display_name"] . "\") hinzuzufügen.";
           }
           goto render;
         }
