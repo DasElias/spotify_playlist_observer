@@ -33,10 +33,12 @@ class DeleteTaskController extends AbstractController {
       $playlist->delete();
       $dbService->savePlaylist($playlist);
       unset($_SESSION["deleteTask"]);
+
+      $this->redirect("listPlaylists.php?restoreableTask=".$_GET["id"]);
+      return;
     }
 
-
-    $this->redirect("listPlaylists.php?restoreableTask=".$_GET["id"]);
+    $this->redirect("listPlaylists.php");
   }
 }
 
