@@ -3,7 +3,7 @@
 		<div class="w-12 min-w-12 h-12 xs:w-14 xs:min-w-14 xs:h-14 sm:w-20 sm:min-w-20 sm:h-20">
 			{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.sourceImages, 80)} %}
 		</div>
-		<div class="px-3 min-w-0">
+		<div class="px-2 sm:px-3 min-w-0">
 			<div class="block font-bold truncate-ellipsis">{{ playlist.sourceName }}</div>
 			<div class="block text-grey text-sm truncate-ellipsis {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
 				{{ playlist.sourceOwner.display_name }}</div>
@@ -18,7 +18,7 @@
 		<div class="w-12 min-w-12 h-12 xs:w-14 xs:min-w-14 xs:h-14 sm:w-20 sm:min-w-20 sm:h-20">
 			{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.destImages, 80)} %}
 		</div>
-		<div class="px-3 min-w-0">
+		<div class="px-2 sm:px-3 min-w-0">
 			<div class="block font-bold text-right truncate-ellipsis">{{ playlist.destName }}</div>
 			<div class="block text-grey text-sm text-right truncate-ellipsis {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
 				{{ playlist.destOwner.display_name }}</div>
