@@ -130,6 +130,16 @@ module.exports = {
 
         
       })
+      addVariant('hover-enabled', ({ container, separator }) => {
+        const hoverHover = postcss.atRule({ name: 'media', params: '(hover: hover)' })
+        hoverHover.append(container.nodes)
+        container.append(hoverHover)
+        hoverHover.walkRules(rule => {
+          rule.selector = `.${e(`hover-hover${separator}${rule.selector.slice(1)}`)}`
+        })
+
+        
+      })
       addVariant('hover-none', ({ container, separator }) => {
         const hoverHover = postcss.atRule({ name: 'media', params: '(hover: none)' })
         hoverHover.append(container.nodes)
