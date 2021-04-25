@@ -92,7 +92,7 @@ module.exports = {
     extend: {
       backgroundColor: ["hover-hover", "group-hover-hover"],
       textColor: ["hover-hover", "group-hover-hover"],
-      display: ["hover-none"]
+      display: ["hover-none", "hover-enabled"]
     }
   },
   plugins: [
@@ -135,7 +135,7 @@ module.exports = {
         hoverHover.append(container.nodes)
         container.append(hoverHover)
         hoverHover.walkRules(rule => {
-          rule.selector = `.${e(`hover-hover${separator}${rule.selector.slice(1)}`)}`
+          rule.selector = `.${e(`hover-enabled${separator}${rule.selector.slice(1)}`)}`
         })
 
         
