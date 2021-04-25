@@ -12,15 +12,22 @@ class DatabaseService {
 
   }
 
-  public function getPlaylist($id) {
-    $playlist = $this->collection->findOne(["_id" => new ObjectID($id)]);
+  public function getTask($id, $userId) {
+    $playlist = $this->collection->findOne([
+      "_id" => new ObjectID($id),
+      "destOwner.id" => $userId
+    ]);
+
     if($playlist) {
       return WatchedPlaylist::withDbDocument($playlist);
     } else return null;
   }
 
-  public function getPlaylists() {
-    $cursor = $this->collection->find(["wasDeleted" => ['$ne' => true]]);
+  public function getTasks($userId) {
+    $cursor = $this->collection->find([
+      "wasDeleted" => ['$ne' => true],
+      "destOwner.id" => $userId
+    ]);
     $playlists = [];
     foreach($cursor as $i) {
       array_push($playlists, WatchedPlaylist::withDbDocument($i));
@@ -28,17 +35,25 @@ class DatabaseService {
     return $playlists;
   }
 
-  public function getPlaylistsAsDocuments() {
-    $cursor = $this->collection->find(["wasDeleted" => ['$ne' => true]]);
+  public function getTasksAsDocuments($userId) {
+    $cursor = $this->collection->find(
+      ["wasDeleted" => ['$ne' => true],
+      "destOwner.id" => $userId
+    ]);
     return $cursor->toArray();
   }
 
   public function doesTaskExist($sourcePlaylistId, $destPlaylistId) {
-    $cursor = $this->collection->find(["sourceId" => $sourcePlaylistId, "destId" => $destPlaylistId, "wasDeleted" => ['$ne' => true]]);
+    $cursor = $this->collection->find([
+      "sourceId" => $sourcePlaylistId, 
+      "destId" => $destPlaylistId, 
+      "wasDeleted" => ['$ne' => true]
+    ]);
+
     return count($cursor->toArray()) >= 1;
   }
 
-  public function savePlaylist($playlist) {
+  public function saveTask($playlist) {
     $this->collection->replaceOne(
       ["_id" => $playlist->getDbId() == null ? new ObjectId() : new ObjectId($playlist->getDbId()) ],
       $playlist->getDocument(),

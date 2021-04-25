@@ -21,24 +21,32 @@ class DeclineSongController extends AbstractController {
       $this->redirect("declineSong.php?id=" . $_GET["id"]);
       die;
     } 
-  
 
-    $dbService = new DatabaseService(); 
-    $playlist = $dbService->getPlaylist($_GET["id"]);
-    if(! $playlist) {
-      $this->redirect("listPlaylists.php");
+    try {  
+      $dbService = new DatabaseService(); 
+      $spotifyService = new ApiSpotifyService();
+      $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
+      if(! $playlist) {
+        $this->redirect("listPlaylists.php");
+        return;
+      }
+
+      if(isset($_SESSION["songUri"])) {
+        $acceptSongUri = $_SESSION["songUri"];
+        $playlist->removeSongFromChanges($acceptSongUri);
+        $dbService->saveTask($playlist);
+      }
+      
+
+      $this->redirect("viewChanges.php?id=" . $_GET["id"]);
+    } catch(RefreshTokenNotSetException $e) {
+      $this->redirect("index.php"); 
       return;
-    }
-
-    if(isset($_SESSION["songUri"])) {
-      $acceptSongUri = $_SESSION["songUri"];
-      $playlist->removeSongFromChanges($acceptSongUri);
-      $dbService->savePlaylist($playlist);
+    } finally {
       unset($_SESSION["songUri"]);
     }
-    
+  
 
-    $this->redirect("viewChanges.php?id=" . $_GET["id"]);
   }
 }
 

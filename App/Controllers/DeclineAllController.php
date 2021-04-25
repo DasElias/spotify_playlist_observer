@@ -23,16 +23,23 @@ class DeclineAllController extends AbstractController {
     } 
 
     if(isset($_SESSION["declineAll"])) {
-      $dbService = new DatabaseService(); 
-      $playlist = $dbService->getPlaylist($_GET["id"]);
-      if(! $playlist) {
-        $this->redirect("listPlaylists.php");
+      try {
+        $dbService = new DatabaseService(); 
+        $spotifyService = new ApiSpotifyService();
+        $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
+        if(! $playlist) {
+          $this->redirect("listPlaylists.php");
+          return;
+        }
+  
+        $uris = $playlist->removeAllChangesAndGetUris();
+        $dbService->saveTask($playlist);
+      } catch(RefreshTokenNotSetException $e) {
+        $this->redirect("index.php"); 
         return;
+      } finally {
+        unset($_SESSION["declineAll"]);
       }
-
-      $uris = $playlist->removeAllChangesAndGetUris();
-      $dbService->savePlaylist($playlist);
-      unset($_SESSION["declineAll"]);
     }
 
 

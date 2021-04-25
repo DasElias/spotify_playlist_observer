@@ -23,16 +23,24 @@ class RestoreTaskController extends AbstractController {
     } 
 
     if(isset($_SESSION["restoreTask"])) {
-      $dbService = new DatabaseService(); 
-      $playlist = $dbService->getPlaylist($_GET["id"]);
-      if(! $playlist) {
-        $this->redirect("listPlaylists.php");
+      try {
+        $spotifyService = new ApiSpotifyService();
+        $dbService = new DatabaseService(); 
+        $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
+        if(! $playlist) {
+          $this->redirect("listPlaylists.php");
+          return;
+        }
+  
+        $playlist->restore();
+        $dbService->saveTask($playlist);
+      } catch(RefreshTokenNotSetException $e) {
+        $this->redirect("index.php"); 
         return;
+      } finally {
+        unset($_SESSION["restoreTask"]);
       }
-
-      $playlist->restore();
-      $dbService->savePlaylist($playlist);
-      unset($_SESSION["restoreTask"]);
+      
     }
 
 

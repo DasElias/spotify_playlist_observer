@@ -18,18 +18,18 @@ class ViewChangesController extends AbstractController {
 
     try {
       $dbService = new DatabaseService(); 
-      $playlist = $dbService->getPlaylist($_GET["id"]);
+      $spotifyService = new ApiSpotifyService();
+      $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
       if(! $playlist) {
         $this->redirect("listPlaylists.php");
         return;
       }
 
-      $spotifyService = new ApiSpotifyService();
       $sourcePlaylist = $spotifyService->getPlaylist($playlist->getSourceId());
       $destPlaylist = $spotifyService->getPlaylist($playlist->getDestId());
       $playlist->update($sourcePlaylist, $destPlaylist);
       
-      $dbService->savePlaylist($playlist);
+      $dbService->saveTask($playlist);
 
 
       $params = [

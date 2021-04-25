@@ -23,19 +23,27 @@ class DeleteTaskController extends AbstractController {
     } 
 
     if(isset($_SESSION["deleteTask"])) {
-      $dbService = new DatabaseService(); 
-      $playlist = $dbService->getPlaylist($_GET["id"]);
-      if(! $playlist) {
-        $this->redirect("listPlaylists.php");
+      try {
+        $spotifyService = new ApiSpotifyService();
+        $dbService = new DatabaseService(); 
+        $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
+        if(! $playlist) {
+          $this->redirect("listPlaylists.php");
+          return;
+        }
+  
+        $playlist->delete();
+        $dbService->saveTask($playlist);
+  
+        $this->redirect("listPlaylists.php?restoreableTask=".$_GET["id"]);
         return;
+      } catch(RefreshTokenNotSetException $e) {
+        $this->redirect("index.php"); 
+        return;
+      } finally {
+        unset($_SESSION["deleteTask"]);
       }
-
-      $playlist->delete();
-      $dbService->savePlaylist($playlist);
-      unset($_SESSION["deleteTask"]);
-
-      $this->redirect("listPlaylists.php?restoreableTask=".$_GET["id"]);
-      return;
+      
     }
 
     $this->redirect("listPlaylists.php");

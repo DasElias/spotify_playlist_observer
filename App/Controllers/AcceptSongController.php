@@ -25,21 +25,20 @@ class AcceptSongController extends AbstractController {
 
     try {
       $dbService = new DatabaseService(); 
-      $playlist = $dbService->getPlaylist($_GET["id"]);
+      $spotifyService = new ApiSpotifyService();
+      $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
       if(! $playlist) {
         $this->redirect("listPlaylists.php");
         return;
       }
 
       if(isset($_SESSION["songUri"])) {
-        $spotifyService = new ApiSpotifyService();
         $acceptSongUri = $_SESSION["songUri"];
         $spotifyService->addSongsToPlaylist($playlist->getDestId(), [
           $acceptSongUri
         ]);
         $playlist->removeSongFromChanges($acceptSongUri);
-        $dbService->savePlaylist($playlist);
-        unset($_SESSION["songUri"]);
+        $dbService->saveTask($playlist);
       }
       
 
@@ -47,6 +46,8 @@ class AcceptSongController extends AbstractController {
     } catch(RefreshTokenNotSetException $e) {
       $this->redirect("index.php"); 
       return;
+    } finally {
+      unset($_SESSION["songUri"]);
     }
   }
 }

@@ -32,10 +32,10 @@ class InsertPlaylistController extends AbstractController {
         $spotifyService = new ApiSpotifyService();
         $sourcePlaylist = $spotifyService->getPlaylist($sourcePlaylistId);
         $destPlaylist = $spotifyService->getPlaylist($destPlaylistId);
-        $me = $spotifyService->me();
+        $userId = $spotifyService->getUserId();
         $playlist = WatchedPlaylist::withApiResponse($sourcePlaylist, $destPlaylist);
 
-        if($destPlaylist["owner"]["id"] != $me["id"]) {
+        if($destPlaylist["owner"]["id"] != $userId) {
           if($destPlaylist["collaborative"]) {
             $errorMsg = "Du hast nicht die erforderlichen Rechte, Songs zur Zielplaylist (\"" . $destPlaylist['name'] . "\" von \"" . $destPlaylist["owner"]["display_name"] . "\") hinzuzufügen. Leider kann momentan nur der Eigentümer von gemeinsamen Playlists diese als Zielplaylist auswählen";
           } else {
@@ -50,7 +50,7 @@ class InsertPlaylistController extends AbstractController {
           goto render;
         }
 
-        $dbService->savePlaylist($playlist);
+        $dbService->saveTask($playlist);
         $this->redirect("listPlaylists.php");
       } catch(UnauthorizedException $e) {
         $errorMsg = "Du hast entweder auf die Quell- oder die Zielplaylist keinen Zugriff.";

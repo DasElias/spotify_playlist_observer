@@ -1,6 +1,6 @@
 <?php
 namespace App\Controllers;
-use App\Services\DatabaseService;
+use App\Services\{ApiSpotifyService, DatabaseService, RefreshTokenNotSetException};
 use App\Models\ImageChooser;
 
 class PlaylistOverviewController extends AbstractController {
@@ -25,17 +25,25 @@ class PlaylistOverviewController extends AbstractController {
       unset($_SESSION["restoreableTask"]);
     }
 
-    $dbService = new DatabaseService(); 
-    $playlists = $dbService->getPlaylistsAsDocuments();
+    try {
+      $spotifyService = new ApiSpotifyService();
+      $dbService = new DatabaseService(); 
+      $playlists = $dbService->getTasksAsDocuments($spotifyService->getUserId());
 
-    $params = [
-      "playlists" => $playlists,
-      "imageChooser" => new ImageChooser(),
-      "restoreableTask" => $restoreableTask
-    ];
+      $params = [
+        "playlists" => $playlists,
+        "imageChooser" => new ImageChooser(),
+        "restoreableTask" => $restoreableTask
+      ];
+      
+      $twig = $this->loadTwig();
+      echo $twig->render("pages/p-playlistoverview.twig", $params);
+    } catch(RefreshTokenNotSetException $e) {
+      $this->redirect("index.php"); 
+      return;
+    }
+
     
-    $twig = $this->loadTwig();
-    echo $twig->render("pages/p-playlistoverview.twig", $params);
   }
 
 }

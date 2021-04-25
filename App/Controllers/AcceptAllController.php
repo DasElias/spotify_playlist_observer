@@ -22,28 +22,30 @@ class AcceptAllController extends AbstractController {
       die;
     } 
 
-    try {
-      if(isset($_SESSION["acceptAll"])) {
+    if(isset($_SESSION["acceptAll"])) {
+      try {
         $dbService = new DatabaseService(); 
-        $playlist = $dbService->getPlaylist($_GET["id"]);
+        $spotifyService = new ApiSpotifyService();
+        $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
         if(! $playlist) {
           $this->redirect("listPlaylists.php");
           return;
         }
   
-        $spotifyService = new ApiSpotifyService();
         $uris = $playlist->removeAllChangesAndGetUris();
         $spotifyService->addSongsToPlaylist($playlist->getDestId(), $uris);
-        $dbService->savePlaylist($playlist);
+        $dbService->saveTask($playlist);
+      } catch(RefreshTokenNotSetException $e) {
+        $this->redirect("index.php"); 
+        return;
+      } finally {
         unset($_SESSION["acceptAll"]);
       }
-     
-
-      $this->redirect("viewChanges.php?id=" . $_GET["id"]);
-    } catch(RefreshTokenNotSetException $e) {
-      $this->redirect("index.php"); 
-      return;
     }
+   
+    $this->redirect("viewChanges.php?id=" . $_GET["id"]);
+
+    
   }
 }
 
