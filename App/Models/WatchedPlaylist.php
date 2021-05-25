@@ -69,6 +69,26 @@ class WatchedPlaylist {
     return $added;
   }
 
+  private static function filterDuplicates($arr) {
+    $noDuplicates = [];
+
+    foreach($arr as $keyA => $a) {
+      $isInArray = false;
+      foreach($noDuplicates as $keyB => $b) {
+        if($a["track"]["id"] == $b["track"]["id"]) {
+          $isInArray = true;
+          break;
+        }
+      }
+
+      if(! $isInArray) {
+        array_push($noDuplicates, $a);
+      }
+    }
+
+    return $noDuplicates;
+  }
+
   private static function merge($a, $b) {
     foreach($b as $i) {
       array_push($a, $i);
@@ -85,7 +105,12 @@ class WatchedPlaylist {
 
     $addedSongs = WatchedPlaylist::findSongsNotPresentInDest($currentSourceTracks, $this->dbDocument["lastSourceTracks"]);
     $allChanges = WatchedPlaylist::merge($addedSongs, $this->dbDocument["trackedChanges"]);
+
+    // filter songs that are present in destination playlist
     $allChanges = WatchedPlaylist::findSongsNotPresentInDest($allChanges, $destTracks);
+
+    // filter duplicates
+    $allChanges = WatchedPlaylist::filterDuplicates($allChanges);
 
     $this->dbDocument["lastSourceTracks"] = $currentSourceTracks;
     $this->dbDocument["trackedChanges"] = $allChanges;
