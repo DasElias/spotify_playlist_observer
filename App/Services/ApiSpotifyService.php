@@ -8,14 +8,22 @@ use SpotifyWebAPI\SpotifyWebAPIAuthException;
 
 class ApiSpotifyService extends SpotifyService {
   private $apiOrNull;
+  private $sessionOrNull;
 
   public function __construct() {
     parent::__construct();
   }
 
+  public function __destruct() {
+    if($this->sessionOrNull != null) {
+      $this->saveAccessToken($this->sessionOrNull->getAccessToken());
+      $this->saveRefreshToken($this->sessionOrNull->getRefreshToken());
+    }
+  }
+
   private function getApi() {
     if($this->apiOrNull == null) {
-      $session = new Session(
+      $this->sessionOrNull = new Session(
         $_ENV["CLIENT_ID"],
         $_ENV["CLIENT_SECRET"]
       );
@@ -25,11 +33,11 @@ class ApiSpotifyService extends SpotifyService {
         $refreshToken = $this->getRefreshToken();
     
         if($accessToken) {
-          $session->setAccessToken($accessToken);
-          $session->setRefreshToken($refreshToken);
+          $this->sessionOrNull->setAccessToken($accessToken);
+          $this->sessionOrNull->setRefreshToken($refreshToken);
         } else {
           // Or request a new access token
-          $session->refreshAccessToken($refreshToken);
+          $this->sessionOrNull->refreshAccessToken($refreshToken);
         }
       } else {
         throw new RefreshTokenNotSetException();
@@ -39,7 +47,7 @@ class ApiSpotifyService extends SpotifyService {
         'auto_refresh' => true,
         'return_assoc' => true
       ];
-      $this->apiOrNull = new SpotifyWebAPI($options, $session);
+      $this->apiOrNull = new SpotifyWebAPI($options, $this->sessionOrNull);
     }
 
     return $this->apiOrNull;
