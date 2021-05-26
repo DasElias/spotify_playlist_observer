@@ -1,13 +1,13 @@
 <?php
 namespace App\Services;
+use App\Models\User;
 use SpotifyWebAPI\Session;
+use SpotifyWebAPI\SpotifyWebAPI;
 
-class LoginSpotifyService extends SpotifyService {
+class LoginSpotifyService {
   private $session;
 
   public function __construct() {
-    parent::__construct();
-
     $this->session = new Session(
       $_ENV["CLIENT_ID"],
       $_ENV["CLIENT_SECRET"],
@@ -32,7 +32,7 @@ class LoginSpotifyService extends SpotifyService {
     return $this->session->getAuthorizeUrl($options);
   }
 
-  public function authorizeCallback() {
+  public function authorizeCallbackAndGetUserId($userDatabaseService) {
     if(! (isset($_GET["state"]) && isset($_SESSION["state"]))) {
       throw new RefreshTokenNotSetException();
     }
@@ -47,8 +47,20 @@ class LoginSpotifyService extends SpotifyService {
     // Request a access token using the code from Spotify
     $this->session->requestAccessToken($_GET['code']);
 
-    $this->saveAccessToken($this->session->getAccessToken());
-    $this->saveRefreshToken($this->session->getRefreshToken());
+    $options = [
+      'auto_refresh' => true,
+      'return_assoc' => true
+    ];
+    $api = new SpotifyWebAPI($options, $this->session);
+    $userId = $api->me()["id"];
+
+    $user = new User(
+        $userId, 
+        $this->session->getAccessToken(),
+        $this->session->getRefreshToken());
+
+    $userDatabaseService->saveUser($user);
+    return $userId;
   }
 
   private function getRedirectUri() {

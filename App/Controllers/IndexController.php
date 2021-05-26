@@ -1,6 +1,6 @@
 <?php
 namespace App\Controllers;
-use App\Services\LoginSpotifyService;
+use App\Services\{LoginSpotifyService};
 
 class IndexController extends AbstractController {
 

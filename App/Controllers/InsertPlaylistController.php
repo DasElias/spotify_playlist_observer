@@ -1,9 +1,9 @@
 <?php
 namespace App\Controllers;
 use App\Models\WatchedPlaylist;
-use App\Services\{ApiSpotifyService, DatabaseService, RefreshTokenNotSetException};
+use App\Services\{ApiSpotifyService, DatabaseService, UserDatabaseService, RefreshTokenNotSetException};
 
-class InsertPlaylistController extends AbstractController {
+class InsertPlaylistController extends AbstractUserIdController {
 
   public function __construct() {
     parent::__construct();
@@ -29,7 +29,7 @@ class InsertPlaylistController extends AbstractController {
       }
 
       try {
-        $spotifyService = new ApiSpotifyService();
+        $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
         $sourcePlaylist = $spotifyService->getPlaylist($sourcePlaylistId);
         $destPlaylist = $spotifyService->getPlaylist($destPlaylistId);
         $userId = $spotifyService->getUserId();

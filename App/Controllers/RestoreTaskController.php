@@ -1,9 +1,9 @@
 <?php
 namespace App\Controllers;
 use App\Models\{WatchedPlaylist, ImageChooser};
-use App\Services\{ApiSpotifyService, DatabaseService, RefreshTokenNotSetException};
+use App\Services\{ApiSpotifyService, DatabaseService, UserDatabaseService, RefreshTokenNotSetException};
 
-class RestoreTaskController extends AbstractController {
+class RestoreTaskController extends AbstractUserIdController {
 
   public function __construct() {
     parent::__construct();
@@ -24,7 +24,7 @@ class RestoreTaskController extends AbstractController {
 
     if(isset($_SESSION["restoreTask"])) {
       try {
-        $spotifyService = new ApiSpotifyService();
+        $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
         $dbService = new DatabaseService(); 
         $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
         if(! $playlist) {

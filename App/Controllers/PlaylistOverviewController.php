@@ -1,9 +1,9 @@
 <?php
 namespace App\Controllers;
-use App\Services\{ApiSpotifyService, DatabaseService, RefreshTokenNotSetException};
+use App\Services\{ApiSpotifyService, DatabaseService, UserDatabaseService, RefreshTokenNotSetException};
 use App\Models\ImageChooser;
 
-class PlaylistOverviewController extends AbstractController {
+class PlaylistOverviewController extends AbstractUserIdController {
 
   public function __construct() {
     parent::__construct();
@@ -26,7 +26,7 @@ class PlaylistOverviewController extends AbstractController {
     }
 
     try {
-      $spotifyService = new ApiSpotifyService();
+      $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
       $dbService = new DatabaseService(); 
       $playlists = $dbService->getTasksAsDocuments($spotifyService->getUserId());
 

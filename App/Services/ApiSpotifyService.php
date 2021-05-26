@@ -6,18 +6,21 @@ use SpotifyWebAPI\SpotifyWebAPI;
 use SpotifyWebAPI\SpotifyWebAPIException;
 use SpotifyWebAPI\SpotifyWebAPIAuthException;
 
-class ApiSpotifyService extends SpotifyService {
+class ApiSpotifyService {
   private $apiOrNull;
   private $sessionOrNull;
+  private $userDatabaseService;
+  private $user;
 
-  public function __construct() {
-    parent::__construct();
+  public function __construct($userDatabaseService, $userId) {
+    $this->userDatabaseService = $userDatabaseService;
+    $this->user = $userDatabaseService->getUser($userId);
   }
 
   public function __destruct() {
     if($this->sessionOrNull != null) {
-      $this->saveAccessToken($this->sessionOrNull->getAccessToken());
-      $this->saveRefreshToken($this->sessionOrNull->getRefreshToken());
+      $this->user->setAccessToken($this->sessionOrNull->getAccessToken());
+      $this->user->setRefreshToken($this->sessionOrNull->getRefreshToken());
     }
   }
 
@@ -28,9 +31,9 @@ class ApiSpotifyService extends SpotifyService {
         $_ENV["CLIENT_SECRET"]
       );
   
-      if($this->isRefreshTokenSet()) {
-        $accessToken = $this->getAccessToken();
-        $refreshToken = $this->getRefreshToken();
+      if($this->user->isRefreshTokenSet()) {
+        $accessToken = $this->user->getAccessToken();
+        $refreshToken = $this->user->getRefreshToken();
     
         if($accessToken) {
           $this->sessionOrNull->setAccessToken($accessToken);
@@ -54,14 +57,7 @@ class ApiSpotifyService extends SpotifyService {
   }
 
   public function getUserId() {
-    if(isset($_SESSION["userId"])) {
-      return $_SESSION["userId"];
-    } else {
-      $me = $this->getApi()->me();
-      $id = $me["id"];
-      $_SESSION["userId"] = $id;
-      return $id;
-    }
+    return $this->user->getUserId();
   }
 
   public function getPlaylist($playlistId) {
