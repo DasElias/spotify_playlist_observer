@@ -2,6 +2,7 @@ const colors = require('tailwindcss/colors')
 const postcss = require('postcss')
 const selectorParser = require('postcss-selector-parser')
 const fractionWidths = require("tailwindcss-fraction-widths");
+const important = require('tailwindcss-important');
 
 module.exports = {
   theme: {
@@ -92,7 +93,8 @@ module.exports = {
     extend: {
       backgroundColor: ["hover-hover", "group-hover-hover"],
       textColor: ["hover-hover", "group-hover-hover"],
-      display: ["hover-none", "hover-enabled"]
+      display: ["hover-none", "hover-enabled"],
+      margin: ["important"]
     }
   },
   plugins: [
@@ -161,6 +163,7 @@ module.exports = {
         
       })
     },
-    fractionWidths(8, 10)
+    fractionWidths(8, 10),
+    important()
   ],
 }
