@@ -24,18 +24,25 @@ class DeleteTaskController extends AbstractUserIdController {
 
     if(isset($_SESSION["deleteTask"])) {
       try {
-        $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
+        $userId = $this->getUserId();
+        $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $userId);
         $dbService = new DatabaseService(); 
-        $playlist = $dbService->getTask($_GET["id"], $spotifyService->getUserId());
+        $playlist = $dbService->getTaskSuppressOwnerCheck($_GET["id"]);
         if(! $playlist) {
+          $this->redirect("listPlaylists.php");
+          return;
+        }
+
+        if(! (($playlist->getSourceOwnerId() == $userId && $playlist->getSourceType() == "user") || $playlist->getDestOwnerId() == $userId)) {
           $this->redirect("listPlaylists.php");
           return;
         }
   
         $playlist->delete();
         $dbService->saveTask($playlist);
-  
-        $this->redirect("listPlaylists.php?restoreableTask=".$_GET["id"]);
+
+        $redirectString = "listPlaylists.php" . ($playlist->getDestOwnerId() == $userId ? "?restoreableTask=".$_GET["id"] : "");
+        $this->redirect($redirectString);
         return;
       } catch(RefreshTokenNotSetException $e) {
         $this->redirect("index.php"); 
