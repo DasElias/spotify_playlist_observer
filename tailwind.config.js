@@ -12,6 +12,7 @@ module.exports = {
       'white': {
         'DEFAULT': '#ffffff',
         'beige': '#EAEAEA',
+        'floral': '#e5e3ca'
       },
       'grey': {
         'DEFAULT': '#B3B3B3',
