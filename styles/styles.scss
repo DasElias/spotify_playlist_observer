@@ -109,6 +109,10 @@ button, button:active, button:focus, button:focus-within {
   @apply text-red-light border-red-light;
 }
 
+.btn-small-padding {
+  @apply py-1 px-3;
+}
+
 .backbtn {
   width: 40px;
   height: 40px;
