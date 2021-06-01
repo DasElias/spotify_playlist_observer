@@ -38,7 +38,13 @@
 				</div>
 			</div>
 
-			{% if playlist.trackedChanges is empty %}
+			{% if not isAuthorized %}
+				<div class="text-center pt-9">
+					<p class="font-bold mt-4 mb-1">Zustimmung erforderlich!</p>
+					<p class="text-sm">&quot;{{ playlist.sourceOwner.display_name }}&quot; muss zuerst zustimmen, damit du seinen/ihren Lieblingssongs folgen darfst.</p>
+
+				</div>
+			{% elseif playlist.trackedChanges is empty %}
 				<div class="text-center pt-9">
 					<p class="font-bold mt-4 mb-1">Keine Veränderungen anzuzeigen!</p>
 					<p class="text-sm">Scheinbar wurden der Playlist &quot;{{ playlist.sourceName }}&quot; von &quot;{{ playlist.sourceOwner.display_name }}&quot; keine neuen Songs hinzugefügt.</p>
