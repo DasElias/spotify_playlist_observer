@@ -14,10 +14,14 @@ class WatchedPlaylist {
     return new self($dbDocument, true);
   }
 
-  public static function withApiResponse($src, $dest) {
+  // type is either "playlist" or "user" for the favourite songs
+  public static function withApiResponse($src, $dest, $srcType, $destType = "playlist") {
     $dbDocument = [
+      "sourceType" => $srcType,
+      "destType" => "playlist",
       "lastSourceTracks" => [],
-      "trackedChanges" => []
+      "trackedChanges" => [],
+      "isSourceAuthorized" => $srcType == "playlist"
     ];
     $dbDocument = WatchedPlaylist::writeMetadata($dbDocument, $src, $dest);
     return new self($dbDocument, false);
@@ -144,6 +148,15 @@ class WatchedPlaylist {
     $this->dbDocument["wasDeleted"] = false;
   }
 
+  public function authorizeSource() {
+    $this->dbDocument["isSourceAuthorized"] = true;
+  }
+
+  public function isSourceAuthorized() {
+    if(! isset($this->dbDocument["isSourceAuthorized"])) return true;
+    else return $this->dbDocument["isSourceAuthorized"];
+  }
+
   public function getArtistString($playlistItem) {
     $str = "";
     $artists = $playlistItem["track"]["artists"];
@@ -172,6 +185,32 @@ class WatchedPlaylist {
 
   public function getDestId() {
     return $this->dbDocument["destId"];
+  }
+
+  public function getSourceOwnerId() {
+    return $this->dbDocument["sourceOwner"]["id"];
+  }
+
+  public function getDestOwnerId() {
+    return $this->dbDocument["destOwner"]["id"];
+  }
+
+  public function getSourceOwnerName() {
+    return $this->dbDocument["sourceOwner"]["display_name"];
+  }
+
+  public function getDestOwnerName() {
+    return $this->dbDocument["destOwner"]["display_name"];
+  }
+
+  public function getSourceType() {
+    if(! isset($this->dbDocument["sourceType"])) return "playlist";
+    else return $this->dbDocument["sourceType"];
+  }
+
+  public function getDestType() {
+    if(! isset($this->dbDocument["destType"])) return "playlist";
+    else return $this->dbDocument["destType"];
   }
 
   public function getDocument() {
