@@ -23,7 +23,8 @@ class LoginSpotifyService {
           'playlist-modify-private',
           'playlist-read-collaborative',
           'playlist-read-private',
-          'user-read-private'
+          'user-read-private',
+          'user-library-read'
       ],
       'state' => $state,
     ];
