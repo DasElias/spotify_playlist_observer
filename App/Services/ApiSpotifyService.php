@@ -15,6 +15,9 @@ class ApiSpotifyService {
   public function __construct($userDatabaseService, $userId) {
     $this->userDatabaseService = $userDatabaseService;
     $this->user = $userDatabaseService->getUser($userId);
+    if($this->user == null) {
+      throw new UnauthorizedException("userId not found in database");
+    }
   }
 
   public function __destruct() {
@@ -74,6 +77,36 @@ class ApiSpotifyService {
       } 
       throw $e;
     }
+  }
+
+  public function me() {
+    return $this->getApi()->me();
+  }
+
+  public function getUserProfile($userId) {
+    return $this->getApi()->getUser($userId);
+  }
+
+  public function getFavouriteSongs() {
+    $total = 0;
+    $offset = 0;
+    $limit = 50;
+
+    $return = [
+      "items" => []
+    ];
+
+    do {
+      $r = $this->getApi()->getMySavedTracks([
+        "offset" => $offset,
+        "limit" => $limit
+      ]);
+      $total = $r["total"];
+      $offset = $offset + $limit;
+      $return["items"] = array_merge($r["items"], $return["items"]);
+    } while($total > $offset + $limit);
+
+    return $return;
   }
 
   public function addSongsToPlaylist($playlistId, $songUriArray) {
