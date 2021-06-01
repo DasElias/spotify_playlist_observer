@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\WatchedPlaylist;
-use App\Services\{ApiSpotifyService, DatabaseService, UserDatabaseService, RefreshTokenNotSetException};
+use App\Services\{PlaylistQueryService, ApiSpotifyService, DatabaseService, UserDatabaseService, RefreshTokenNotSetException};
 
 class InsertPlaylistController extends AbstractUserIdController {
 
@@ -14,26 +14,37 @@ class InsertPlaylistController extends AbstractUserIdController {
   public function show() {
     $errorMsg = null;
 
-    if(isset($_POST["sourcePlaylist"]) && isset($_POST["destPlaylist"])) {
-      $sourcePlaylistUrl = $_POST["sourcePlaylist"];
+    if(isset($_POST["source"]) && isset($_POST["destPlaylist"])) {
       $destPlaylistUrl = $_POST["destPlaylist"];
-      $sourcePlaylistId = $this->getPlaylistIdFromLink($sourcePlaylistUrl);
       $destPlaylistId = $this->getPlaylistIdFromLink($destPlaylistUrl);
-      if($sourcePlaylistId == null || $destPlaylistId == null) {
-        $errorMsg = "Eine der beiden eingegebenen Playlistlinks hat ein ungültiges Format.";
+
+      $sourceId = null;
+      $source = null;
+      $dest = "playlist";
+
+      if(isset($_POST["sourcePlaylist"]) && !empty($_POST["sourcePlaylist"])) {
+        $source = "playlist";
+        $sourceId = $this->getPlaylistIdFromLink($_POST["sourcePlaylist"]);
+      } else if(isset($_POST["sourceUser"]) && !empty($_POST["sourceUser"])) {
+        $source = "user";
+        $sourceId = $this->getUserIdFromLink($_POST["sourceUser"]);
+      }
+
+      if($sourceId == null || $destPlaylistId == null) {
+        $errorMsg = "Eine der beiden eingegebenen Links hat ein ungültiges Format.";
         goto render;
       }
-      if($sourcePlaylistId == $destPlaylistId) {
+      if($sourceId == $destPlaylistId) {
         $errorMsg = "Quell- und Zielplaylist können nicht identisch sein.";
         goto render;
       }
 
       try {
-        $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
-        $sourcePlaylist = $spotifyService->getPlaylist($sourcePlaylistId);
-        $destPlaylist = $spotifyService->getPlaylist($destPlaylistId);
-        $userId = $spotifyService->getUserId();
-        $playlist = WatchedPlaylist::withApiResponse($sourcePlaylist, $destPlaylist);
+        $userId = $this->getUserId();
+        $playlistQueryService = new PlaylistQueryService(new UserDatabaseService(), $userId);
+        $sourcePlaylist = $playlistQueryService->query($sourceId, $source);
+        $destPlaylist = $playlistQueryService->query($destPlaylistId, $dest);
+        $playlist = WatchedPlaylist::withApiResponse($sourcePlaylist, $destPlaylist, $source, $dest);
 
         if($destPlaylist["owner"]["id"] != $userId) {
           if($destPlaylist["collaborative"]) {
@@ -45,7 +56,7 @@ class InsertPlaylistController extends AbstractUserIdController {
         }
 
         $dbService = new DatabaseService();
-        if($dbService->doesTaskExist($sourcePlaylistId, $destPlaylistId)) {
+        if($dbService->doesTaskExist($sourceId, $destPlaylistId)) {
           $errorMsg = "Änderungen in der Playlist \"" . $sourcePlaylist["name"] . "\" von \"". $sourcePlaylist["owner"]["display_name"] . "\" werden bereits in die Playlist \"" . $destPlaylist["name"] . "\" übernommen.";
           goto render;
         }
@@ -78,6 +89,16 @@ class InsertPlaylistController extends AbstractUserIdController {
   private function getPlaylistIdFromLink($link) {
     $matches = [];
     $success = preg_match('/^(https:\/\/open\.spotify\.com\/playlist\/(.*)\?si=.*)$/', $link, $matches);
+    if(! $success) {
+      return null;
+    }
+
+    return $matches[2];
+  }
+
+  private function getUserIdFromLink($link) {
+    $matches = [];
+    $success = preg_match('/^(https:\/\/open\.spotify\.com\/user\/(.*)\?si=.*)$/', $link, $matches);
     if(! $success) {
       return null;
     }

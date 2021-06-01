@@ -25,6 +25,14 @@ class UserDatabaseService {
     else return null;
   }
 
+  public function doesUserExist($userId) {
+    $user = $this->collection->findOne([
+      "userId" => $userId
+    ]);
+
+    return $user != null;
+  }
+
   public function saveUser($user) {
     $this->collection->replaceOne(
       ["userId" => $user->getUserId() ],
