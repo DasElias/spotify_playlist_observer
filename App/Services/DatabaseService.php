@@ -23,6 +23,16 @@ class DatabaseService {
     } else return null;
   }
 
+  public function getTaskSuppressOwnerCheck($id) {
+    $playlist = $this->collection->findOne([
+      "_id" => new ObjectID($id)
+    ]);
+
+    if($playlist) {
+      return WatchedPlaylist::withDbDocument($playlist);
+    } else return null;
+  }
+
   public function getTasks($userId) {
     $cursor = $this->collection->find([
       "wasDeleted" => ['$ne' => true],
@@ -41,6 +51,20 @@ class DatabaseService {
       "destOwner.id" => $userId
     ]);
     return $cursor->toArray();
+  }
+
+  public function getTasksWaitingForAuthorization($userId) {
+    $cursor = $this->collection->find(
+      ["wasDeleted" => ['$ne' => true],
+      "sourceOwner.id" => $userId,
+      "sourceType" => "user",
+      "isSourceAuthorized" => ['$ne' => true] 
+    ]);
+    $playlists = [];
+    foreach($cursor as $i) {
+      array_push($playlists, WatchedPlaylist::withDbDocument($i));
+    }
+    return $playlists;
   }
 
   public function doesTaskExist($sourcePlaylistId, $destPlaylistId) {
