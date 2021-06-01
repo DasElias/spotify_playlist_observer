@@ -26,12 +26,15 @@ class PlaylistOverviewController extends AbstractUserIdController {
     }
 
     try {
-      $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
+      $userId = $this->getUserId();
+      $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $userId);
       $dbService = new DatabaseService(); 
-      $playlists = $dbService->getTasksAsDocuments($spotifyService->getUserId());
+      $playlists = $dbService->getTasksAsDocuments($userId);
+      $waitingForAuthorization = $dbService->getTasksWaitingForAuthorization($userId);
 
       $params = [
         "playlists" => $playlists,
+        "waitingForAuthorization" => $waitingForAuthorization,
         "imageChooser" => new ImageChooser(),
         "restoreableTask" => $restoreableTask
       ];

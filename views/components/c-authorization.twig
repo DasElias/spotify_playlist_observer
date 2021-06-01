@@ -1,0 +1,16 @@
+<div class="bg-white-floral bg-opacity-10 border-l-4 border-test text-test rounded-md shadow-lg p-4 my-4" role="alert">
+	<p class="text-lg font-bold">Neue Anfrage</p>
+	<p>Darf {{ a.getDestOwnerName() }} deinen Lieblingssongs folgen?</p>
+	<a href="authorizeSource.php?id={{ a.getDbId() }}">
+		<button class="btn btn-border-green opacity-70 btn-small-padding !m-0 !mt-2 !mr-2 w-32 justify-center">
+			<i class="fas fa-check mr-2" style="transform: translateY(5%);"></i>
+			Annehmen
+		</button>
+	</a>
+	<a href="deleteTask.php?id={{ a.getDbId() }}&amp;deleteTask=true">
+		<button class="btn btn-border-red opacity-70 btn-small-padding !m-0 !mt-2 w-32 justify-center">
+			<i class="fas fa-times mr-2" style="transform: translateY(5%);"></i>
+			Ablehnen
+		</button>
+	</a>
+</div>

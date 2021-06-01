@@ -10,6 +10,10 @@
 			</div>
 		{% endif %}
 
+		{% for a in waitingForAuthorization %}
+			{% include "components/c-authorization.twig" with {"authorization": a} %}
+		{% endfor %}
+
 		<div class="flex justify-center pt-4">
 			<div class="w-full">
 				{% if playlists is empty %}
