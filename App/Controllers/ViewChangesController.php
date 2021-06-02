@@ -26,7 +26,7 @@ class ViewChangesController extends AbstractUserIdController {
         return;
       }
 
-      $sourcePlaylist = $playlistQueryService->query($playlist->getSourceId(), $playlist->getSourceType());
+      $sourcePlaylist = $playlistQueryService->query($playlist->getSourceId(), $playlist->getSourceType(), $playlist->isSourceAuthorized());
       $destPlaylist = $playlistQueryService->query($playlist->getDestId(), $playlist->getDestType());
       $playlist->update($sourcePlaylist, $destPlaylist);
       

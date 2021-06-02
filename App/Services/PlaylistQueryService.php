@@ -12,18 +12,18 @@ class PlaylistQueryService {
     $this->spotifyService = new ApiSpotifyService($userDatabaseService, $userId);
   }
 
-  public function query($id, $type) {
-    if($type == "user") return $this->getFavouriteSongs($id);
+  public function query($id, $type, $isSourceAuthorized = null) {
+    if($type == "user") return $this->getFavouriteSongs($id, $isSourceAuthorized);
     else return $this->getPlaylist($id);
   }
 
-  private function getFavouriteSongs($id) {
+  private function getFavouriteSongs($id, $isSourceAuthorized) {
     $profile = $this->spotifyService->getUserProfile($id);
 
     $items = [];
 
 
-    if($this->userDatabaseService->doesUserExist($id)) {
+    if($isSourceAuthorized && $this->userDatabaseService->doesUserExist($id)) {
       $foreignSpotifyService = new ApiSpotifyService($this->userDatabaseService, $id);
       $favSongs = $foreignSpotifyService->getFavouriteSongs();
 

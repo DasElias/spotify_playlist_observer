@@ -20,13 +20,16 @@ class InsertPlaylistController extends AbstractUserIdController {
 
       $sourceId = null;
       $source = null;
+      $isSourceAuthorized = null;
       $dest = "playlist";
 
       if(isset($_POST["sourcePlaylist"]) && !empty($_POST["sourcePlaylist"])) {
         $source = "playlist";
+        $isSourceAuthorized = true;
         $sourceId = $this->getPlaylistIdFromLink($_POST["sourcePlaylist"]);
       } else if(isset($_POST["sourceUser"]) && !empty($_POST["sourceUser"])) {
         $source = "user";
+        $isSourceAuthorized = false;
         $sourceId = $this->getUserIdFromLink($_POST["sourceUser"]);
       }
 
@@ -42,7 +45,7 @@ class InsertPlaylistController extends AbstractUserIdController {
       try {
         $userId = $this->getUserId();
         $playlistQueryService = new PlaylistQueryService(new UserDatabaseService(), $userId);
-        $sourcePlaylist = $playlistQueryService->query($sourceId, $source);
+        $sourcePlaylist = $playlistQueryService->query($sourceId, $source, $isSourceAuthorized);
         $destPlaylist = $playlistQueryService->query($destPlaylistId, $dest);
         $playlist = WatchedPlaylist::withApiResponse($sourcePlaylist, $destPlaylist, $source, $dest);
 
