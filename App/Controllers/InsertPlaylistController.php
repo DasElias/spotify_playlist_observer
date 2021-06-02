@@ -23,11 +23,11 @@ class InsertPlaylistController extends AbstractUserIdController {
       $isSourceAuthorized = null;
       $dest = "playlist";
 
-      if(isset($_POST["sourcePlaylist"]) && !empty($_POST["sourcePlaylist"])) {
+      if($_POST["source"] == "playlist" && isset($_POST["sourcePlaylist"]) && !empty($_POST["sourcePlaylist"])) {
         $source = "playlist";
         $isSourceAuthorized = true;
         $sourceId = $this->getPlaylistIdFromLink($_POST["sourcePlaylist"]);
-      } else if(isset($_POST["sourceUser"]) && !empty($_POST["sourceUser"])) {
+      } else if($_POST["source"] == "user" && isset($_POST["sourceUser"]) && !empty($_POST["sourceUser"])) {
         $source = "user";
         $isSourceAuthorized = false;
         $sourceId = $this->getUserIdFromLink($_POST["sourceUser"]);
