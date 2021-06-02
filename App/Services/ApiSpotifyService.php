@@ -99,7 +99,8 @@ class ApiSpotifyService {
     do {
       $r = $this->getApi()->getMySavedTracks([
         "offset" => $offset,
-        "limit" => $limit
+        "limit" => $limit,
+        "market" => $_ENV["MARKET"]
       ]);
       $total = $r["total"];
       $offset = $offset + $limit;
