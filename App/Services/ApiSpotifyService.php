@@ -64,11 +64,36 @@ class ApiSpotifyService {
   }
 
   public function getPlaylist($playlistId) {
+    $itemFields = "items(track(name,id,uri,preview_url,album(name, images),artists(id, name)))";
+
     try {
-      return $this->getApi()->getPlaylist($playlistId, [
-        "fields" => "collaborative,name,id,images,owner(display_name,id),tracks(items(track(name,id,uri,preview_url,album(name, images),artists(id, name))))",
+      $playlist = $this->getApi()->getPlaylist($playlistId, [
+        "fields" => "collaborative,name,id,images,owner(display_name,id),tracks(total, limit, " . $itemFields . ")",
         "market" => $_ENV["MARKET"]
       ]);
+      
+      $limit = $playlist["tracks"]["limit"];
+      $offset = $limit;
+      $remaining = max(0, $playlist["tracks"]["total"] - $limit);
+
+
+      while($remaining > 0) {
+        $additionalTracks = $this->getApi()->getPlaylistTracks($playlistId, [
+          "fields" => $itemFields,
+          "limit" => $limit,
+          "offset" => $offset,
+          "market" => $_ENV["MARKET"]
+        ]);
+        
+        array_push($playlist["tracks"]["items"], ...$additionalTracks["items"]);
+
+        $offset += $limit;
+        $remaining= max(0, $remaining - $limit);
+      }
+
+    
+
+      return $playlist;
     } catch(SpotifyWebAPIAuthException $e) {
       throw new UnauthorizedException("Can't access playlist " . $playlistId, $e->getCode(), $e);
     } catch(SpotifyWebAPIException $e) {
