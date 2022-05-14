@@ -130,7 +130,7 @@ class ApiSpotifyService {
       $total = $r["total"];
       $offset = $offset + $limit;
       $return["items"] = array_merge($r["items"], $return["items"]);
-    } while($total > $offset + $limit);
+    } while($total > $offset);
 
     return $return;
   }
