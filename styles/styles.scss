@@ -109,6 +109,11 @@ button, button:active, button:focus, button:focus-within {
   @apply text-red-light border-red-light;
 }
 
+.btn-border-disabled:disabled, .btn-border-disabled:disabled:hover {
+  @apply text-grey border-2 border-grey;
+
+}
+
 .btn-small-padding {
   @apply py-1 px-3;
 }

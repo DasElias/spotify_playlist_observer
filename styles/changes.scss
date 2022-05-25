@@ -22,7 +22,7 @@
   @apply font-bold rounded-full inline-flex items-center justify-center transform transition;
 }
 
-.actionbtn:hover {
+.actionbtn:hover:not(:disabled) {
   @apply scale-105;
 }
 

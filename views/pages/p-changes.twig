@@ -67,12 +67,12 @@
 						</div>
 					</li>
 					{% for c in playlist.trackedChanges %}
-						<li class="changesElem py-1">
+						<li id="change-{{ c.track.uri }}" class="changesElem addedSong py-1">
 							<div class="flex group rounded-md py-2 sm:px-2 hover-hover:bg-white hover:bg-opacity-10">
 								<div class="colPlay flex items-center justify-content">
 									{% set songPreview = c.track.preview_url %}
 									<div class="show-on-group-hover playwrapper">
-										<button class="rounded-full justify-center playbtn inline-flex" onclick="onPlayButton(this)" data-source="{{ songPreview|default('') }}" {{(songPreview is null) ? 'disabled' : ''}}>
+										<button class="start-playing rounded-full justify-center playbtn inline-flex" onclick="onPlayButton(this)" data-source="{{ songPreview|default('') }}" {{(songPreview is null) ? 'disabled' : ''}}>
 											<i class="bi bi-play-fill text-lg" style="transform: translate(5%, -2.5%);"></i>
 										</button>
 									</div>
@@ -99,12 +99,12 @@
 
 								</div>
 								<div class="colButtons items-center justify-end">
-									<a href="acceptSong.php?id={{ playlistObject.getDbId() }}&amp;songUri={{ c.track.uri }}" class="mr-1 sm:mr-4 rounded-full justify-center actionbtn btn-border-green" title="Änderung übernehmen">
+									<button onclick="acceptChange('{{ playlistObject.getDbId() }}', '{{ c.track.uri }}')" class="mr-1 sm:mr-4 rounded-full justify-center actionbtn btn-border-green btn-border-disabled" title="Änderung übernehmen">
 										<i class="fas fa-check"></i>
-									</a>
-									<a href="declineSong.php?id={{ playlistObject.getDbId() }}&amp;songUri={{ c.track.uri }}" class="rounded-full justify-center actionbtn btn-border-red" title="Änderung ablehnen">
+									</button>
+									<button onclick="declineChange('{{ playlistObject.getDbId() }}', '{{ c.track.uri }}')" class="rounded-full justify-center actionbtn btn-border-red btn-border-disabled" title="Änderung ablehnen">
 										<i class="fas fa-times"></i>
-									</a>
+									</button>
 
 								</div>
 							</div>
