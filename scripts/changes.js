@@ -13,33 +13,41 @@ function _handleChange(filename, id, songUri) {
   buttons.prop('disabled',true);
 
   var url = filename + "?id=" + id + "&songUri=" + songUri;
+  var nChanges = $(".addedSong:not(.hidden)").length;
+
+  // current song is not hidden
+  if(nChanges <= 1) {
+    window.location.href = url;
+    return;
+  }
+
+  _playNextSong(rootElem);
+
+  rootElem.addClass("hidden");
+
+
   fetch(url)
     .then(response => {
-      // start playing next song if trailer is played
-      var playBtn = rootElem.find(".colPlay");
-      var isPlaying = playBtn.hasClass("isPlaying");
-
-      if(isPlaying) {
-        var nextPlayBtn = rootElem.next().find(".start-playing");
-        if(nextPlayBtn.length != 0) {
-          onPlayButton(nextPlayBtn);
-        } else {
-          onPauseButton(playBtn);
-        }
-      }
-
-      var nChanges = $(".addedSong").length;
-      if(nChanges <= 1) {
-        // non-standard parameter to bypass the cache
-        window.location.reload(true);
-      } else {
-        rootElem.remove();  
-      } 
+      rootElem.remove();
     })
     .catch(response => {
       console.log(response);
 
-      // non-standard parameter to bypass the cache
-      window.location.reload(true);
+      rootElem.removeClass("hidden");
     });
+}
+
+function _playNextSong(rootElem) {
+  var playBtnWrapper = rootElem.find(".colPlay");
+  var isPlaying = playBtnWrapper.hasClass("isPlaying");
+
+  if(isPlaying) {
+    var nextPlayBtn = rootElem.next().find(".start-playing");
+    if(nextPlayBtn.length != 0) {
+      pause();
+      onPlayButton(nextPlayBtn);
+    } else {
+      onPauseButton(playBtnWrapper);
+    }
+  }
 }
