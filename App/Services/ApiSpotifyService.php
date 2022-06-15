@@ -64,7 +64,7 @@ class ApiSpotifyService {
   }
 
   public function getPlaylist($playlistId) {
-    $itemFields = "items(track(name,id,uri,preview_url,album(name, images),artists(id, name)))";
+    $itemFields = "items(track(name,id,uri,preview_url,linked_from(id, uri),album(name, images),artists(id, name)))";
 
     try {
       $playlist = $this->getApi()->getPlaylist($playlistId, [
@@ -91,7 +91,7 @@ class ApiSpotifyService {
         $remaining= max(0, $remaining - $limit);
       }
 
-    
+      $playlist["tracks"]["items"] = $this->handleLinkedTracks($playlist["tracks"]["items"]);
 
       return $playlist;
     } catch(SpotifyWebAPIAuthException $e) {
@@ -132,6 +132,8 @@ class ApiSpotifyService {
       $return["items"] = array_merge($r["items"], $return["items"]);
     } while($total > $offset);
 
+    $return["items"] = $this->handleLinkedTracks($return["items"]);
+
     return $return;
   }
 
@@ -140,4 +142,18 @@ class ApiSpotifyService {
     $success = $this->getApi()->addPlaylistTracks($playlistId, $songUriArray); 
   }
 
+  private function handleLinkedTracks($items) {
+    foreach($items as $value) {
+      $track = $value["track"];
+
+      if(isset($track["linked_from"])) {
+        $track["id"] = $track["linked_from"]["id"];
+        $track["uri"] = $track["linked_from"]["uri"];
+      }
+    }
+
+
+
+    return $items;
+  }
 }
