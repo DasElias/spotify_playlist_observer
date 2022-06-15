@@ -92,6 +92,7 @@ class ApiSpotifyService {
       }
 
       $playlist["tracks"]["items"] = $this->handleLinkedTracks($playlist["tracks"]["items"]);
+      $playlist["tracks"]["items"] = $this->filterNullTracks($playlist["tracks"]["items"]);
 
       return $playlist;
     } catch(SpotifyWebAPIAuthException $e) {
@@ -133,6 +134,7 @@ class ApiSpotifyService {
     } while($total > $offset);
 
     $return["items"] = $this->handleLinkedTracks($return["items"]);
+    $return["items"] = $this->filterNullTracks($return["items"]);
 
     return $return;
   }
@@ -155,5 +157,11 @@ class ApiSpotifyService {
 
 
     return $items;
+  }
+
+  private function filterNullTracks($items) {
+    return array_filter($items, function($i) {
+      return $i["track"] !== null;
+    });
   }
 }
