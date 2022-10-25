@@ -18,6 +18,7 @@ class TwigFactory {
 
         $twig = new Environment($twigLoader, $options);
         $twig->addExtension(new TwigEnvExtension());
+        $twig->addExtension(new SpotifyLinkExtension());
 
         if ($debug) {
             $twig->addExtension(new DebugExtension());

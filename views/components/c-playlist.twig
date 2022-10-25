@@ -1,13 +1,15 @@
-<div class="group flex rounded-md p-2 {{ disableHover != true ? 'hover-hover:bg-white hover:bg-opacity-10 cursor-pointer' :'' }}">
+<div class="group flex rounded-md p-2 {{ disableHover != true ? 'hover-hover:bg-white hover:bg-opacity-10 cursor-pointer' :'' }}">	
 	<div class="w-full min-w-0 flex flex-row items-center">
-		<div class="w-12 min-w-12 h-12 xs:w-14 xs:min-w-14 xs:h-14 sm:w-20 sm:min-w-20 sm:h-20">
-			{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.sourceImages, 80)} %}
-		</div>
-		<div class="px-2 sm:px-3 min-w-0">
-			<div class="block font-bold truncate-ellipsis">{{ playlist.sourceName }}</div>
-			<div class="block text-grey text-sm truncate-ellipsis {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
-				{{ playlist.sourceOwner.display_name }}</div>
-		</div>
+		{% if enableLink %} <a href="{{ toSpotifyPlaylistLink(playlist.sourceId) }}" class="flex flex-row items-center"> {% endif %}
+			<div class="w-12 min-w-12 h-12 xs:w-14 xs:min-w-14 xs:h-14 sm:w-20 sm:min-w-20 sm:h-20">
+				{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.sourceImages, 80)} %}
+			</div>
+			<div class="px-2 sm:px-3 min-w-0">
+				<div class="block font-bold truncate-ellipsis">{{ playlist.sourceName }}</div>
+				<div class="block text-grey text-sm truncate-ellipsis {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
+					{{ playlist.sourceOwner.display_name }}</div>
+			</div>
+		{% if enableLink %} </a> {% endif %}
 	</div>
 	<div class="flex justify-center items-center text-white">
 		<svg class="fill-current w-6 h-6 sm:w-12 sm:h-12" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 16 16">
@@ -15,14 +17,16 @@
 		</svg>
 	</div>
 	<div class="w-full min-w-0 flex flex-row-reverse items-center">
-		<div class="w-12 min-w-12 h-12 xs:w-14 xs:min-w-14 xs:h-14 sm:w-20 sm:min-w-20 sm:h-20">
-			{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.destImages, 80)} %}
-		</div>
-		<div class="px-2 sm:px-3 min-w-0">
-			<div class="block font-bold text-right truncate-ellipsis">{{ playlist.destName }}</div>
-			<div class="block text-grey text-sm text-right truncate-ellipsis {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
-				{{ playlist.destOwner.display_name }}</div>
-		</div>
+		{% if enableLink %} <a href="{{ toSpotifyPlaylistLink(playlist.destId) }}" class="flex flex-row-reverse items-center"> {% endif %}
+			<div class="w-12 min-w-12 h-12 xs:w-14 xs:min-w-14 xs:h-14 sm:w-20 sm:min-w-20 sm:h-20">
+				{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.destImages, 80)} %}
+			</div>
+			<div class="px-2 sm:px-3 min-w-0">
+				<div class="block font-bold text-right truncate-ellipsis">{{ playlist.destName }}</div>
+				<div class="block text-grey text-sm text-right truncate-ellipsis {{ disableHover != true ? 'group-hover-hover:text-white' :'' }}">von
+					{{ playlist.destOwner.display_name }}</div>
+			</div>
+		{% if enableLink %} </a> {% endif %}
 	</div>
 	{% if disableHover != true %}
 		<div class="hover-enabled:hidden hover-none:flex justify-center items-center text-grey ml-2.5">
