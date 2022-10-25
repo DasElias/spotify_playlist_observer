@@ -12,7 +12,7 @@ function _handleChange(filename, id, songUri) {
   var buttons = $(rootId + " .colButtons *");
   buttons.prop('disabled',true);
 
-  var url = filename + "?id=" + id + "&songUri=" + songUri;
+  var url = filename + "?suppressRedirect=true&id=" + id + "&songUri=" + songUri;
   var nChanges = $(".addedSong:not(.hidden)").length;
 
   // current song is not hidden

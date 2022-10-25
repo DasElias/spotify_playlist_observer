@@ -114,6 +114,30 @@ class ApiSpotifyService {
   }
 
   public function getFavouriteSongs() {
+    $return = $this->getItems(function($api, $args) {
+        return $api->getMySavedTracks($args);
+      }, 
+      [
+        "market" => $_ENV["MARKET"]
+      ]
+    );
+
+    $return["items"] = $this->handleLinkedTracks($return["items"]);
+    $return["items"] = $this->filterNullTracks($return["items"]);
+
+    return $return;
+  }
+
+  public function getUserPlaylists() {
+    $return = $this->getItems(function($api, $args) {
+        return $api->getMyPlaylists($args);
+      }
+    );
+
+    return $return;
+  }
+
+  private function getItems($callback, $params = []) {
     $total = 0;
     $offset = 0;
     $limit = 50;
@@ -123,18 +147,19 @@ class ApiSpotifyService {
     ];
 
     do {
-      $r = $this->getApi()->getMySavedTracks([
-        "offset" => $offset,
-        "limit" => $limit,
-        "market" => $_ENV["MARKET"]
-      ]);
+      $r = $callback(
+        $this->getApi(),
+        [
+          "offset" => $offset,
+          "limit" => $limit,
+          ...$params
+        ]
+      );
+      
       $total = $r["total"];
       $offset = $offset + $limit;
       $return["items"] = array_merge($r["items"], $return["items"]);
     } while($total > $offset);
-
-    $return["items"] = $this->handleLinkedTracks($return["items"]);
-    $return["items"] = $this->filterNullTracks($return["items"]);
 
     return $return;
   }
