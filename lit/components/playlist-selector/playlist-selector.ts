@@ -32,8 +32,6 @@ class PlaylistSelector extends LitElement {
   }
   
   render() {
-      console.log(this.playlistData)
-
       return html`
         <div>
           <div class="relative inline-block w-full text-black">
@@ -105,7 +103,6 @@ class PlaylistSelector extends LitElement {
     }
 
     _selectNewElement(playlist, event) {
-      console.log("select new elem");
       if(this._isClickEvent(event)) {
         this._selectedElem = playlist;
       }

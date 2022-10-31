@@ -12,7 +12,6 @@ class PlaylistElement extends LitElement {
 
 
   render() {
-    console.log(this.playlist);
     return html`
       <div class="flex p-1 h-10">
         <div class="h-full">

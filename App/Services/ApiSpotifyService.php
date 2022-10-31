@@ -145,7 +145,6 @@ class ApiSpotifyService {
     });
     $playlists["items"] = array_values($filteredItems);
 
-    print_r($playlists);
     return $playlists;
   }
 
