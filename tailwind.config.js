@@ -76,6 +76,7 @@ module.exports = {
         '14': '3.5rem',
         '15': '3.75rem',
         '16': '4rem',
+        '18': '4.5rem',
         '20': '5rem',
         '24': '6rem',
         '32': '8rem',
@@ -86,6 +87,7 @@ module.exports = {
       },
       spacing: {
         '120': '30rem',
+        'full': '100%'
       }
     },
   },
