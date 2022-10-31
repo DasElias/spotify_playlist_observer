@@ -98,7 +98,7 @@ class ApiSpotifyService {
     } catch(SpotifyWebAPIAuthException $e) {
       throw new UnauthorizedException("Can't access playlist " . $playlistId, $e->getCode(), $e);
     } catch(SpotifyWebAPIException $e) {
-      if($e->getCode() == 404) {
+      if($e->getCode() == 404 || $e->getCode() == 400) {
         throw new PlaylistDoesntExistException("Playlist " . $playlistId . " does not exist.", $e->getCode(), $e);
       } 
       throw $e;
