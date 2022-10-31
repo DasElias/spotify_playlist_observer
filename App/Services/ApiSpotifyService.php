@@ -137,6 +137,18 @@ class ApiSpotifyService {
     return $return;
   }
 
+  public function getInsertableUserPlaylists() {
+    $userId = $this->getUserId();
+    $playlists = $this->getUserPlaylists();
+    $filteredItems = array_filter($playlists["items"], function($elem) use($userId) {
+      return $elem["owner"]["id"] == $userId && !$elem["collaborative"];
+    });
+    $playlists["items"] = array_values($filteredItems);
+
+    print_r($playlists);
+    return $playlists;
+  }
+
   private function getItems($callback, $params = []) {
     $total = 0;
     $offset = 0;

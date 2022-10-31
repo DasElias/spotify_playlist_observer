@@ -74,8 +74,7 @@
 					</label>
 					<p class="text-grey">Füge hier den Link zur deiner eigenen Playlist ein, in welche du Songs übernehmen möchtest.</p>
 				</div>
-				<input class="shadow appearance-none border rounded w-full py-2 px-3 text-black focus:outline-none focus:shadow-outline placeholder-gradient" id="destPlaylist" name="destPlaylist" type="text" placeholder="https://open.spotify.com/playlist/XXXXXXXXXXXXXXXXXXXXXX?si=XXXXXXXXXXXXXXXXXXXXXX">
-				<p class="validation-error">Kein gültiger Playlistlink!</p>
+				<playlist-selector playlist-data="{{playlists.items|json_encode()}}" form-name="destPlaylist"></playlist-selector>
 			</div>
 			<div class="pt-8 text-center">
 				<a href="listPlaylists.php" class="btn btn-black">

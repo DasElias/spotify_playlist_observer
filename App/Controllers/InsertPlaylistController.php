@@ -80,18 +80,15 @@ class InsertPlaylistController extends AbstractUserIdController {
       
     }
 
-    $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
-    $playlists = $spotifyService->getUserPlaylists();
 
 
     render:
+    $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
+    $playlists = $spotifyService->getInsertableUserPlaylists();
+
     $params = [
       "errorMsg" => $errorMsg,
-      "playlists" => $playlists,
-      "headerExtensions" => '
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-      '
+      "playlists" => $playlists
     ];
     $twig = $this->loadTwig();
     echo $twig->render("pages/p-insert.twig", $params);
@@ -99,7 +96,7 @@ class InsertPlaylistController extends AbstractUserIdController {
 
   private function getPlaylistIdFromLink($link) {
     $matches = [];
-    $success = preg_match('/^(https:\/\/open\.spotify\.com\/playlist\/(.*)\?si=.*)$/', $link, $matches);
+    $success = preg_match('/^(https:\/\/open\.spotify\.com\/playlist\/(.*)(\?)?(si=.*)?)$/', $link, $matches);
     if(! $success) {
       return null;
     }
@@ -109,7 +106,7 @@ class InsertPlaylistController extends AbstractUserIdController {
 
   private function getUserIdFromLink($link) {
     $matches = [];
-    $success = preg_match('/^(https:\/\/open\.spotify\.com\/user\/(.*)\?si=.*)$/', $link, $matches);
+    $success = preg_match('/^(https:\/\/open\.spotify\.com\/user\/(.*)(\?)?(si=.*)?)$/', $link, $matches);
     if(! $success) {
       return null;
     }

@@ -41,12 +41,12 @@ function validateInsertionForm() {
 }
 
 function validatePlaylistLink(input) {
-  const isValidLink = /^(https:\/\/open\.spotify\.com\/playlist\/.*\?si=.*)$/.test(input);
+  const isValidLink = /^(https:\/\/open\.spotify\.com\/playlist\/.*)$/.test(input);
   return isValidLink;
 }
 
 function validateUserLink(input) {
-  const isValidLink = /^(https:\/\/open\.spotify\.com\/user\/.*\?si=.*)$/.test(input);
+  const isValidLink = /^(https:\/\/open\.spotify\.com\/user\/.*)$/.test(input);
   return isValidLink;
 }
 
