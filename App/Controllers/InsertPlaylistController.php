@@ -85,6 +85,9 @@ class InsertPlaylistController extends AbstractUserIdController {
     render:
     $spotifyService = new ApiSpotifyService(new UserDatabaseService(), $this->getUserId());
     $playlists = $spotifyService->getInsertableUserPlaylists();
+    usort($playlists["items"], function($a, $b) {
+      return strcmp($a["name"], $b["name"]);
+    });
 
     $params = [
       "errorMsg" => $errorMsg,
