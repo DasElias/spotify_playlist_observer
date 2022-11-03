@@ -75,6 +75,8 @@ abstract class AbstractController {
         require("500.php");
         exit(-1);
       });
+    } else {
+      error_reporting(-1);
     }
   }  
 
