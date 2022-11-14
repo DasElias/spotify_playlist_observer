@@ -11,7 +11,7 @@ function setVisibility(elem, isVisible) {
 
 function validateInsertionForm() {
   var isValid = true;
-  var useSourcePlaylist = getSelectedSource() == "playlist";
+  var source = getSelectedSource();
   var sourcePlaylist = $("#sourcePlaylist");
   var sourceUser = $("#sourceUser");
   var dest = $("#destPlaylist");
@@ -19,12 +19,12 @@ function validateInsertionForm() {
   sourceUser.removeClass("invalid");
   dest.removeClass("invalid");
 
-  if(useSourcePlaylist) {
+  if(source == "playlist") {
     if(! validatePlaylistLink(sourcePlaylist.val())) {
       sourcePlaylist.addClass("invalid");
       isValid = false;
     }
-  } else {
+  } else if (source == "user") {
     if(! validateUserLink(sourceUser.val())) {
       sourceUser.addClass("invalid");
       isValid = false;
