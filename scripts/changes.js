@@ -42,10 +42,10 @@ function _playNextSong(rootElem) {
   var isPlaying = playBtnWrapper.hasClass("isPlaying");
 
   if(isPlaying) {
-    var nextPlayBtn = rootElem.next().find(".start-playing");
-    if(nextPlayBtn.length != 0) {
+    var nextPlayBtn = rootElem.nextAll().find(".start-playing:not(:disabled)");
+    if(nextPlayBtn.length > 0) {
       pause();
-      onPlayButton(nextPlayBtn);
+      onPlayButton(nextPlayBtn[0]);
     } else {
       onPauseButton(playBtnWrapper);
     }
