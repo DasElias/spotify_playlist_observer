@@ -200,4 +200,24 @@ class ApiSpotifyService {
       return $i["track"] !== null;
     });
   }
+
+  public function getRecommendations($seedTracks) {
+    // we can pass only 4 seed tracks
+    $seedTracks = array_slice($seedTracks, 0, 5, true);
+
+    $response = $this->getApi()->getRecommendations([
+      "seed_tracks" => $seedTracks,
+      "limit" => 20,
+      "market" => $_ENV["MARKET"]
+    ]);
+    
+    // warp all responses in track attribute
+    for($i = 0; $i < count($response["tracks"]); $i++) {
+      $response["tracks"][$i] = [
+        "track" => $response["tracks"][$i]
+      ];
+    }
+
+    return $response;
+  }
 }

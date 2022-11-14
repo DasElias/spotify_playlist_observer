@@ -14,8 +14,15 @@
 			<div class="border-b border-grey pb-4">
 				{% include "components/c-playlist.twig" with {'disableHover': true, 'enableLink': true} %}
 			</div>
-			<div class="h-8 mt-4 mb-2 mr-2">
-				<div class="float-right relative inline-block text-left dropdown">
+			<div class="min-h-8 mt-5 mb-2 mr-2 pl-8 relative flex items-center justify-center">
+				{% if playlistObject.getSourceType() == "recommendations" %}
+					<a href="generateSongs.php?taskId={{ playlistObject.getDbId() }}" class="btn-small-height btn-green my-3">
+						<i class="fa fa-refresh mr-2" style="transform: translateY(5%);" aria-hidden="true"></i>
+						Neu generieren
+					</a>
+				{% endif %}
+
+				<div class="absolute right-0 inline-block text-left dropdown">
 					<span class="rounded-md shadow-sm">
 						<button class="playbtn inline-flex justify-center dropdown-toggle">
 							<i class="fas fa-ellipsis-h"></i>

@@ -15,13 +15,13 @@ class WatchedPlaylist {
   }
 
   // type is either "playlist" or "user" for the favourite songs
-  public static function withApiResponse($src, $dest, $srcType, $destType = "playlist") {
+  public static function withApiResponse($src, $dest, $srcType, $destType = "playlist", $isSourceAuthorized = false) {
     $dbDocument = [
       "sourceType" => $srcType,
       "destType" => "playlist",
       "lastSourceTracks" => [],
       "trackedChanges" => [],
-      "isSourceAuthorized" => $srcType == "playlist"
+      "isSourceAuthorized" => $isSourceAuthorized
     ];
     $dbDocument = WatchedPlaylist::writeMetadata($dbDocument, $src, $dest);
     return new self($dbDocument, false);

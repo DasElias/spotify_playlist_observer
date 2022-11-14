@@ -67,6 +67,10 @@
   @apply font-bold py-2 px-12 mx-2 my-1 rounded-full inline-flex items-center transform transition;
 }
 
+.btn-small-height {
+  @apply font-bold h-8 px-4 rounded-full inline-flex items-center transform transition;
+}
+
 .btn:hover {
   @apply scale-105;
 }

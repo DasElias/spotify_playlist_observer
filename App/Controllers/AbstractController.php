@@ -37,6 +37,19 @@ abstract class AbstractController {
     
   }
 
+  protected function retrieveGetVar($getName) {
+    $this->ensureVarIsset($_GET[$getName]);
+
+    return $_GET[$getName];
+  }
+
+  protected function ensureVarIsset($var) {
+    if(! isset($var)) {
+      $this->redirectIfDesired("listPlaylists.php", 400);
+      die;
+    }
+  }
+
   protected function storeInSession($getName, $successRedirect, $failureStatusCode) {
     $isRedirectDesired = $this->isRedirectDesired();
 

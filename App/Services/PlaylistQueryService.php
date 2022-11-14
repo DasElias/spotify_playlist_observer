@@ -12,8 +12,9 @@ class PlaylistQueryService {
     $this->spotifyService = new ApiSpotifyService($userDatabaseService, $userId);
   }
 
-  public function query($id, $type, $isSourceAuthorized = null) {
+  public function query($id, $type, $isSourceAuthorized = null ,$destPlaylist = null) {
     if($type == "user") return $this->getFavouriteSongs($id, $isSourceAuthorized);
+    else if ($type == "recommendations") return $this->getRecommendations($id, $destPlaylist);
     else return $this->getPlaylist($id);
   }
 
@@ -50,6 +51,41 @@ class PlaylistQueryService {
     return $this->spotifyService->getPlaylist($id);
   }
 
+  private function getRecommendations($id, $destPlaylist) {
+    $destTracks = $destPlaylist["tracks"]["items"];
+    $items = [];
+    
+    if(count($destTracks) > 0) {
+      // get 5x recommendations from tracks
+      for($i = 0; $i < 5; $i++) {
+        $seedTracks = $this->getRandomFromTracks($destTracks);
+        $apiResponse = $this->spotifyService->getRecommendations($seedTracks);
+        $items = array_merge($items, $apiResponse["tracks"]);
+      }
+    }
+    
 
+    $response = [
+      "collaborative" => false,
+      "name" => "Empfehlungen für " . $destPlaylist["name"],
+      "id" => $id,
+      "images" => $destPlaylist["images"],
+      "owner" => $destPlaylist["owner"],
+      "tracks" => [
+        "items" => $items
+      ]
+    ];
+    return $response;
+  }
+
+  private function getRandomFromTracks($tracks) {
+    $useNSourceTracks = 5;
+    $rand_keys = array_rand($tracks, $useNSourceTracks);
+    $randomTracks = [];
+    foreach($rand_keys as $key) {
+      $randomTracks[] = $tracks[$key]["track"]["id"];
+    }
+    return $randomTracks;
+  }
 
 }

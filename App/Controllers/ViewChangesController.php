@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\{WatchedPlaylist, ImageChooser};
-use App\Services\{PlaylistQueryService, ApiSpotifyService, DatabaseService, UserDatabaseService, RefreshTokenNotSetException};
+use App\Services\{PlaylistQueryService, DeepCloneService, ApiSpotifyService, DatabaseService, RetrieveChangesService, UserDatabaseService, RefreshTokenNotSetException};
 
 class ViewChangesController extends AbstractUserIdController {
 
@@ -11,27 +11,19 @@ class ViewChangesController extends AbstractUserIdController {
   }
 
   public function show() {
-    if(! isset($_GET["id"])) {
-      $this->redirect("listPlaylists.php");
-      return;
-    }
+    $taskId = $this->retrieveGetVar("id");
 
     try {
-      $dbService = new DatabaseService(); 
-      $userDatabaseService = new UserDatabaseService();
-      $playlistQueryService = new PlaylistQueryService($userDatabaseService, $this->getUserId());
-      $playlist = $dbService->getTask($_GET["id"], $this->getUserId());
-      if(! $playlist) {
-        $this->redirect("listPlaylists.php");
-        return;
-      }
+      $retreiveChangesService = new RetrieveChangesService($this->getUserId());
+      $destPlaylistIntercepter = function($destPlaylist) {
+        $deepCloneService = new DeepCloneService();
+        $playlistWithoutTracks = $deepCloneService->clone($destPlaylist);
+        $playlistWithoutTracks["tracks"]["items"] = [];
+        return $playlistWithoutTracks;
+      };
 
-      $sourcePlaylist = $playlistQueryService->query($playlist->getSourceId(), $playlist->getSourceType(), $playlist->isSourceAuthorized());
-      $destPlaylist = $playlistQueryService->query($playlist->getDestId(), $playlist->getDestType());
-      $playlist->update($sourcePlaylist, $destPlaylist);
-      
-      $dbService->saveTask($playlist);
-
+      $playlist = $retreiveChangesService->saveUpdatedPlaylist($taskId, null, $destPlaylistIntercepter);
+      $this->ensureVarIsset($playlist);
 
       $params = [
         "playlist" => $playlist->getDocument(),
