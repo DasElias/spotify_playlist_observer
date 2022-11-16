@@ -59,7 +59,7 @@ class PlaylistQueryService {
       // get 5x recommendations from tracks
       for($i = 0; $i < 5; $i++) {
         $seedTracks = $this->getRandomFromTracks($destTracks);
-        $apiResponse = $this->spotifyService->getRecommendations($seedTracks);
+        $apiResponse = $this->getFilteredRecommendations($seedTracks);
         $items = array_merge($items, $apiResponse["tracks"]);
       }
     }
@@ -78,6 +78,22 @@ class PlaylistQueryService {
     return $response;
   }
 
+  private function getFilteredRecommendations($seedTracks) {
+    $filterStrings = ["Remix", "Mix", "Live"];
+    $apiResponse = $this->spotifyService->getRecommendations($seedTracks);
+    $apiResponse["tracks"] = array_filter($apiResponse["tracks"], function($track) use ($filterStrings) {
+      return $this->containsNoString($track["track"]["name"], $filterStrings);
+    });
+    return $apiResponse;
+  }
+
+  private function containsNoString($string, $checkStrings) {
+    foreach($checkStrings as $checkString) {
+      if(strpos($string, $checkString) !== false) return false;
+    }
+    return true;
+  }
+ 
   private function getRandomFromTracks($tracks) {
     $useNSourceTracks = 5;
     $rand_keys = array_rand($tracks, $useNSourceTracks);
