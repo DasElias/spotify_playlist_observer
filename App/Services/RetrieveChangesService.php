@@ -1,5 +1,6 @@
 <?php
 namespace App\Services;
+use App\Models\WatchedPlaylist;
 
 class RetrieveChangesService {
     private $userId;
@@ -14,7 +15,7 @@ class RetrieveChangesService {
         $this->playlistQueryService = new PlaylistQueryService($this->userDatabaseService, $userId);
     }
 
-    public function saveUpdatedPlaylist($taskId,$taskIntercepter = null, $destPlaylistIntercepter = null) {
+    public function saveUpdatedPlaylist($taskId, $taskIntercepter = null, $destPlaylistIntercepter = null) {
         $taskIntercepter = $taskIntercepter ?? function() {};
         $destPlaylistIntercepter = $destPlaylistIntercepter ?? function($playlist) { return $playlist; };
 
@@ -30,6 +31,25 @@ class RetrieveChangesService {
         
         $this->dbService->saveTask($playlist);
         return $playlist;
+    }
+
+    public function insertNewPlaylist($sourceId, $sourceType, $destId, $destType, $isSourceAuthorized) {
+        $destPlaylist = $this->playlistQueryService->query($destId, $destType);
+        $sourcePlaylist = $this->playlistQueryService->query($sourceId, $sourceType, $isSourceAuthorized, $destPlaylist);
+    
+        if($this->dbService->doesTaskExist($sourceId, $destId)) {
+            throw new OwnerDoesntMatchException("id of the owner doesnt match", $destPlaylist["collaborative"]);
+        }
+
+        $playlist = WatchedPlaylist::withApiResponse($sourcePlaylist, $destPlaylist, $sourceType, $destType, $isSourceAuthorized);
+        if($this->dbService->doesTaskExist($sourceId, $destId)) {
+            throw new TaskAlreadyExistsException("task already exists in database");
+        }
+
+        $playlist->update($sourcePlaylist, $destPlaylist);
+        $this->dbService->saveTask($playlist);
+        return $playlist;
+
     }
 
 }

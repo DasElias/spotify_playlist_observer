@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\WatchedPlaylist;
-use App\Services\{PlaylistQueryService, ApiSpotifyService, DatabaseService, UserDatabaseService, RefreshTokenNotSetException, UnauthorizedException, PlaylistDoesntExistException};
+use App\Services\{PlaylistQueryService, ApiSpotifyService, DatabaseService, RetrieveChangesService, UserDatabaseService, TaskAlreadyExistsException, RefreshTokenNotSetException, OwnerDoesntMatchException, UnauthorizedException, PlaylistDoesntExistException};
 
 class InsertPlaylistController extends AbstractUserIdController {
 
@@ -34,7 +34,7 @@ class InsertPlaylistController extends AbstractUserIdController {
       } else if($_POST["source"] == "recommendations") {
         $source = "recommendations";
         $isSourceAuthorized = true;
-        $sourceId = $this->getPlaylistIdFromLink($_POST["sourcePlaylist"]) . "&recommendations=true";
+        $sourceId = $this->getPlaylistIdFromLink($_POST["destPlaylist"]) . "&recommendations=true";
       } else {
         $errorMsg = "Quelle inkorrekt";
         goto render;
@@ -50,29 +50,17 @@ class InsertPlaylistController extends AbstractUserIdController {
       }
 
       try {
-        $userId = $this->getUserId();
-        $playlistQueryService = new PlaylistQueryService(new UserDatabaseService(), $userId);
-        $destPlaylist = $playlistQueryService->query($destPlaylistId, $dest);
-        $sourcePlaylist = $playlistQueryService->query($sourceId, $source, $isSourceAuthorized, $destPlaylist);
-        $playlist = WatchedPlaylist::withApiResponse($sourcePlaylist, $destPlaylist, $source, $dest, $isSourceAuthorized);
+        $retrieveChangesService = new RetrieveChangesService($this->getUserId());
+        $retrieveChangesService->insertNewPlaylist($sourceId, $source, $destPlaylistId, $dest, $isSourceAuthorized);
 
-        if($destPlaylist["owner"]["id"] != $userId) {
-          if($destPlaylist["collaborative"]) {
-            $errorMsg = "Du hast nicht die erforderlichen Rechte, Songs zur Zielplaylist (\"" . $destPlaylist['name'] . "\" von \"" . $destPlaylist["owner"]["display_name"] . "\") hinzuzufügen. Leider kann momentan nur der Eigentümer von gemeinsamen Playlists diese als Zielplaylist auswählen";
-          } else {
-            $errorMsg = "Du hast nicht die erforderlichen Rechte, Songs zur Zielplaylist (\"" . $destPlaylist['name'] . "\" von \"" . $destPlaylist["owner"]["display_name"] . "\") hinzuzufügen.";
-          }
-          goto render;
-        }
-
-        $dbService = new DatabaseService();
-        if($dbService->doesTaskExist($sourceId, $destPlaylistId)) {
-          $errorMsg = "Änderungen in der Playlist \"" . $sourcePlaylist["name"] . "\" von \"". $sourcePlaylist["owner"]["display_name"] . "\" werden bereits in die Playlist \"" . $destPlaylist["name"] . "\" übernommen.";
-          goto render;
-        }
-
-        $dbService->saveTask($playlist);
         $this->redirect("listPlaylists.php");
+      } catch(OwnerDoesntMatchException $e) {
+        $errorMsg = "Du hast nicht die erforderlichen Rechte, Songs zur Zielplaylist hinzuzufügen.";
+        if($e->isDestCollaborative()) $e = $e . " Leider kann momentan nur der Eigentümer von gemeinsamen Playlists diese als Zielplaylist auswählen.";
+        goto render;
+      } catch (TaskAlreadyExistsException $e) {
+        $errorMsg = "Änderungen in der Playlist werden bereits übernommen.";
+        goto render;
       } catch(UnauthorizedException $e) {
         $errorMsg = "Du hast entweder auf die Quell- oder die Zielplaylist keinen Zugriff.";
         goto render;
