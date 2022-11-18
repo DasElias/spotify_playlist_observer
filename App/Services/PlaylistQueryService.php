@@ -79,7 +79,7 @@ class PlaylistQueryService {
   }
 
   private function getFilteredRecommendations($seedTracks) {
-    $filterStrings = ["Remix", "Mix", "Live"];
+    $filterStrings = ["Remix", "Mix", "Live", "Acoustic"];
     $apiResponse = $this->spotifyService->getRecommendations($seedTracks);
     $apiResponse["tracks"] = array_filter($apiResponse["tracks"], function($track) use ($filterStrings) {
       return $this->containsNoString($track["track"]["name"], $filterStrings);
