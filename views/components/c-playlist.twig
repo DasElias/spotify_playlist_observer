@@ -1,6 +1,6 @@
 <div class="group flex rounded-md p-2 {{ disableHover != true ? 'hover-hover:bg-white hover:bg-opacity-10 cursor-pointer' :'' }}">	
 	<div class="w-full min-w-0 flex flex-row items-center">
-		{% if enableLink %} <a href="{{ toSpotifyPlaylistLink(playlist.sourceId) }}" class="flex flex-row items-center"> {% endif %}
+		{% if enableLink %} <a href="{{ toSpotifyPlaylistLink(playlist.sourceId) }}" class="flex flex-row items-center max-w-full"> {% endif %}
 			<div class="w-12 min-w-12 h-12 xs:w-14 xs:min-w-14 xs:h-14 sm:w-20 sm:min-w-20 sm:h-20">
 				{% include "components/c-image.twig" with {"songImage": imageChooser.getCoverUrl(playlist.sourceImages, 80)} %}
 			</div>
