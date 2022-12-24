@@ -8,7 +8,7 @@ class DatabaseService {
   private $collection;
 
   public function __construct() {
-    $this->collection = (new Client)->selectDatabase($_ENV["MONGODB_DATABASE"])->watchedPlaylists;
+    $this->collection = (new Client($_ENV["MONGODB_CONNSTRING"]))->selectDatabase($_ENV["MONGODB_DATABASE"])->watchedPlaylists;
 
   }
 
