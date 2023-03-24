@@ -87,7 +87,7 @@ abstract class AbstractController {
       set_error_handler(function() {
         require("500.php");
         exit(-1);
-      });
+      }, E_ALL & ~E_DEPRECATED & ~E_STRICT);
     } else {
       error_reporting(E_ALL);
       ini_set('display_errors', '1');
