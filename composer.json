@@ -1,6 +1,7 @@
 {
     "name": "elias/spotify_playlist_observer",
     "type": "project",
+    "license": "proprietary",
     "description": "",
     "require": {
         "guzzlehttp/guzzle": "^7.0",

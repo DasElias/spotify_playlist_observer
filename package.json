@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "A proof-of-concept application which displays the changes in a foreign Spotify playlist on a webpage and allows the user to adopt them into its own playlist.",
   "main": "gulpfile.js",
-  "license": "proprietary",
   "dependencies": {
     "lit": "^2.4.0",
     "postcss": "^8.3.6",
