@@ -8,6 +8,7 @@ This application displays the changes in a foreign Spotify playlist on a webpage
 - MongoDB
 - MongoDB PHP-extension enabled
 - cURL PHP-extension enabled
+- Node 14
 
 ## Installation
 1. copy `.env.example` to `.env` and set the environment variables
