@@ -20,9 +20,20 @@ jobs:
 
     - name: Install dependencies
       run: |
-        composer install --no-progress --ignore-platform-req=mongodb --ignore-platform-req=ext-mongodb
+        composer install --no-progress --ignore-platform-req=ext-mongodb
 
     - name: Build
       run: |
         npm install
-        grunt
+        npm run build-prod
+
+    - name: rsync deployments
+      uses: burnett01/rsync-deployments@7.0.0
+      with:
+        switches: -avzr --delete --exclude=".git/*"
+        path: src/
+        remote_path: ~/
+        remote_host: spotify.daselias.at
+        remote_port: 1717
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
