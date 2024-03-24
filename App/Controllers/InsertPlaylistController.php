@@ -94,7 +94,7 @@ class InsertPlaylistController extends AbstractUserIdController {
 
   private function getPlaylistIdFromLink($link) {
     $matches = [];
-    $success = preg_match('/^(https:\/\/open\.spotify\.com\/playlist\/(.*)(\?)?(si=.*)?)$/', $link, $matches);
+    $success = preg_match('/^(https:\/\/open\.spotify\.com\/playlist\/([^?]+)(\?)?(si=.*)?)$/', $link, $matches);
     if(! $success) {
       return null;
     }
@@ -104,7 +104,7 @@ class InsertPlaylistController extends AbstractUserIdController {
 
   private function getUserIdFromLink($link) {
     $matches = [];
-    $success = preg_match('/^(https:\/\/open\.spotify\.com\/user\/(.*)(\?)?(si=.*)?)$/', $link, $matches);
+    $success = preg_match('/^(https:\/\/open\.spotify\.com\/user\/([^?]+)(\?)?(si=.*)?)$/', $link, $matches);
     if(! $success) {
       return null;
     }
