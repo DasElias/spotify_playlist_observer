@@ -15,7 +15,6 @@ jobs:
       with:
         node-version: 14
 
-
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
@@ -29,7 +28,9 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: |
+        sudo pecl install mongodb
+        composer install --prefer-dist --no-progress
 
     - name: Build
       run: |
