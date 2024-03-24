@@ -31,7 +31,7 @@ jobs:
       uses: burnett01/rsync-deployments@7.0.0
       with:
         switches: -avzr --exclude=".git/*"
-        path: src/
+        path: .
         remote_path: ~/
         remote_host: spotify.daselias.at
         remote_port: 1717
